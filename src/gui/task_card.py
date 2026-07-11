@@ -23,6 +23,9 @@ class TaskCard(QFrame):
 
 
         self.checkbox = QCheckBox()
+        self.setObjectName(
+            "TaskCard"
+        )
 
 
         self.label = QLabel(

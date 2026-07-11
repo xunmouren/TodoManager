@@ -5,23 +5,13 @@ QMainWindow {
 }
 
 
-QWidget {
-
-    font-family:
-    "Microsoft YaHei";
-
-    font-size:14px;
-
-}
-
-
-
-Sidebar {
+#Sidebar {
 
     background:white;
 
-}
+    border-right:1px solid #ddd;
 
+}
 
 
 #SidebarTitle {
@@ -30,10 +20,7 @@ Sidebar {
 
     font-weight:bold;
 
-    padding:20px;
-
 }
-
 
 
 #PageTitle {
@@ -45,19 +32,17 @@ Sidebar {
 }
 
 
-
 QPushButton {
 
     border:none;
 
     padding:12px;
 
-    text-align:left;
-
     border-radius:10px;
 
-}
+    text-align:left;
 
+}
 
 
 QPushButton:hover {
@@ -67,13 +52,27 @@ QPushButton:hover {
 }
 
 
-
 QLineEdit {
+
+    background:white;
 
     padding:12px;
 
     border-radius:12px;
 
     border:1px solid #ddd;
+
+}
+
+
+#TaskCard {
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:12px;
+
+    border:1px solid #eee;
 
 }

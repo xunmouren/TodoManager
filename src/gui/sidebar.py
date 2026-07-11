@@ -18,6 +18,9 @@ class Sidebar(QWidget):
 
 
     def setup_ui(self):
+        self.setObjectName(
+            "Sidebar"
+        )
 
         self.setFixedWidth(
             220
