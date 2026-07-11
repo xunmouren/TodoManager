@@ -42,10 +42,17 @@ class TaskManager:
             if item["id"] != task_id
         ]
         self.storage.save(tasks)
+        self.reorder_ids()
 
     def update_task(self, task):
         tasks = self.storage.load()
         for item in tasks:
             if item["id"] == task.id:
                 item["completed"] = task.completed
+        self.storage.save(tasks)
+
+    def reorder_ids(self):
+        tasks = self.storage.load()
+        for index, task in enumerate(tasks, start=1):
+            task["id"] = index
         self.storage.save(tasks)
