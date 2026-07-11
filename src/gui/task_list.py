@@ -1,9 +1,17 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QLabel,
+    QPushButton,
+    QLineEdit,
+    QScrollArea
+)
 from core.manager import TaskManager
 from .task_card import TaskCard
 
 
 class TaskList(QWidget):
+
     def __init__(self):
         super().__init__()
         self.manager = TaskManager()
@@ -14,26 +22,36 @@ class TaskList(QWidget):
 
     def setup_ui(self):
         layout = QVBoxLayout()
-
+        layout.setSpacing(15)
+        layout.setContentsMargins(20, 20, 20, 20)
         title = QLabel("我的任务")
         title.setObjectName("PageTitle")
 
         self.input = QLineEdit()
         self.input.setPlaceholderText("输入任务...")
 
-        self.add_button = QPushButton("＋ 添加任务")
+        self.add_button = QPushButton("+ 添加任务")
+
         self.add_button.setObjectName("AddButton")
 
+        # 任务滚动区域
+        self.task_container = QWidget()
         self.task_layout = QVBoxLayout()
+        self.task_layout.setSpacing(12)
+        self.task_layout.setContentsMargins(5,5,5,5)
+        self.task_container.setLayout(self.task_layout)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setMinimumHeight(500)
+        self.scroll_area.setFrameShape(QScrollArea.NoFrame)
+        self.scroll_area.setWidget(self.task_container)
 
         layout.addWidget(title)
         layout.addWidget(self.input)
         layout.addWidget(self.add_button)
-        layout.addLayout(self.task_layout)
-        layout.addStretch()
+        layout.addWidget(self.scroll_area,1)
 
         self.setLayout(layout)
-
         self.add_button.clicked.connect(self.add_task)
         self.input.returnPressed.connect(self.add_task)
 
@@ -43,7 +61,6 @@ class TaskList(QWidget):
             widget = item.widget()
             if widget:
                 widget.deleteLater()
-        
         self.cards.clear()
         if self.current_page == "completed":
             tasks = self.manager.get_completed_tasks()
@@ -62,6 +79,7 @@ class TaskList(QWidget):
         self.task_layout.addWidget(card)
         card.delete_requested.connect(self.remove_task)
         card.status_changed.connect(self.update_task)
+        card.edit_requested.connect(self.update_task)
 
     def add_task(self):
         text = self.input.text().strip()

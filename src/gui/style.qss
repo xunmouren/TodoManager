@@ -129,3 +129,33 @@ QCheckBox {
 #TaskCard QPushButton:hover {
     background:#fee2e2;
 }
+
+#TaskCard {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+#TaskCard:hover {
+    border: 1px solid #818cf8;
+    background: #fafafa;
+}
+
+#TaskCard QPushButton {
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#TaskCard QPushButton:hover {
+    background: #eef2ff;
+}
+
+#DeleteButton:hover {
+    background: #fee2e2;
+}
+
+#EditButton:hover {
+    background: #dbeafe;
+}

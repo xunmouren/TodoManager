@@ -48,6 +48,7 @@ class TaskManager:
         tasks = self.storage.load()
         for item in tasks:
             if item["id"] == task.id:
+                item["title"] = task.title
                 item["completed"] = task.completed
         self.storage.save(tasks)
 
