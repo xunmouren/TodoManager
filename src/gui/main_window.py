@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout
 from PySide6.QtGui import QGuiApplication
+from PySide6.QtCore import Qt, QPoint
 from .sidebar import Sidebar
 from .task_list import TaskList
-
 
 class MainWindow(QMainWindow):
     """
@@ -12,6 +12,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         # 调用父类构造函数
         super().__init__()
+        self.drag_position = QPoint()
         self.setup_window()
         self.setup_ui()
         self.center_window()
@@ -20,11 +21,17 @@ class MainWindow(QMainWindow):
         """设置窗口的基本属性"""
         self.setWindowTitle("TodoManager")
         self.resize(1000, 620)
+        # 设置窗口为无边框（才能实现圆角）
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        # 启用透明背景（圆角才能显示）
+        self.setAttribute(Qt.WA_TranslucentBackground)
 
     def setup_ui(self):
         """构建用户界面"""
         # 创建一个容器组件，作为中央部件
         container = QWidget()
+        # 给容器设置圆角样式
+        container.setObjectName("MainContainer")
 
         # 创建水平布局，让侧边栏和任务列表左右排列
         layout = QHBoxLayout()
@@ -54,3 +61,20 @@ class MainWindow(QMainWindow):
         center_point = screen_geometry.center()
         window_geometry.moveCenter(center_point)
         self.move(window_geometry.topLeft())
+    
+    def mousePressEvent(self, event):
+        """鼠标按下时记录位置"""
+        if event.button() == Qt.LeftButton:
+            self.drag_position = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
+            event.accept()
+
+    def mouseMoveEvent(self, event):
+        """鼠标移动时拖动窗口"""
+        if event.buttons() == Qt.LeftButton:
+            self.move(event.globalPosition().toPoint() - self.drag_position)
+            event.accept()
+
+    def mouseReleaseEvent(self, event):
+        """鼠标释放时清空拖动位置"""
+        self.drag_position = QPoint()
+

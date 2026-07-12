@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QScrollArea
 )
+from PySide6.QtCore import Qt
 from core.manager import TaskManager
 from .task_card import TaskCard
 
@@ -18,11 +19,8 @@ class TaskList(QWidget):
 
     def __init__(self):
         super().__init__()
-        # 创建任务管理器实例
         self.manager = TaskManager()
-        # 存储当前显示的任务卡片对象列表
         self.cards = []
-        # 当前显示的页面类型："all" 或 "completed"
         self.current_page = "all"
         self.setup_ui()
         self.refresh()
@@ -39,24 +37,23 @@ class TaskList(QWidget):
         self.input.setPlaceholderText("输入任务...")
 
         self.add_button = QPushButton("+ 添加任务")
-
         self.add_button.setObjectName("AddButton")
 
-        # 任务滚动区域
+        # ===== 任务滚动区域 =====
         self.task_container = QWidget()
         self.task_container.setObjectName("TaskContainer")
         
         self.task_layout = QVBoxLayout()
-        # 卡片间距
-        self.task_layout.setSpacing(6)  # 🆕 增加卡片间距
-        self.task_layout.setContentsMargins(10, 10, 10, 10)
+        self.task_layout.setSpacing(2)
+        self.task_layout.setContentsMargins(10, 10, 10, 10)  # 增加内边距
+        self.task_layout.setAlignment(Qt.AlignTop)  # 顶部对齐
         self.task_container.setLayout(self.task_layout)
         
         self.scroll_area = QScrollArea()
-        # 让内容自适应
+        # 使用 setWidgetResizable(True) 让内容自适应宽度
         self.scroll_area.setWidgetResizable(True)
-        # 最小高度
-        self.scroll_area.setMinimumHeight(200)
+        # 使用最小高度，让滚动区域可以伸缩
+        self.scroll_area.setFixedHeight(380)
         # 无边框
         self.scroll_area.setFrameShape(QScrollArea.NoFrame)
         self.scroll_area.setWidget(self.task_container)
@@ -64,18 +61,17 @@ class TaskList(QWidget):
         layout.addWidget(title)
         layout.addWidget(self.input)
         layout.addWidget(self.add_button)
-        layout.addWidget(self.scroll_area, 1)  # 第4个参数 1 表示可拉伸
+        layout.addWidget(self.scroll_area)
+        layout.addStretch()
 
-        # 连接信号：点击按钮或按回车键都可以添加任务
+        self.setLayout(layout)
+
         self.setLayout(layout)
         self.add_button.clicked.connect(self.add_task)
         self.input.returnPressed.connect(self.add_task)
 
     def refresh(self):
-        """
-        刷新任务列表
-        清空当前显示的所有卡片，从数据库重新加载并显示
-        """
+        """刷新任务列表"""
         # 清空布局中的所有组件
         while self.task_layout.count():
             item = self.task_layout.takeAt(0)
@@ -83,33 +79,25 @@ class TaskList(QWidget):
             if widget:
                 widget.deleteLater()
         
-        # 清空卡片列表
         self.cards.clear()
 
-        # 根据当前页面类型获取对应的任务数据
         if self.current_page == "completed":
             tasks = self.manager.get_completed_tasks()
         else:
             tasks = self.manager.get_tasks()
 
-        # ✅ 修复：只添加一次，使用 reversed() 让新任务在上面
-        # 先添加的在下面，后添加的在上面
+        # 反转列表：最新的在上面
         for task in reversed(tasks):
             self.create_card(task)
         
-        # 在布局底部添加弹性空间，让卡片从顶部开始排列
+        # 在底部添加弹性空间，让卡片从顶部排列
         self.task_layout.addStretch()
 
     def change_page(self, page):
-        """
-        切换页面
-        由侧边栏的 page_changed 信号触发
-        """
         self.current_page = page
         self.refresh()
 
     def create_card(self, task):
-        """创建一个任务卡片并添加到界面"""
         card = TaskCard(task)
         self.cards.append(card)
         self.task_layout.addWidget(card)
@@ -118,7 +106,6 @@ class TaskList(QWidget):
         card.edit_requested.connect(self.update_task)
 
     def add_task(self):
-        """添加新任务"""
         text = self.input.text().strip()
         if not text:
             return
@@ -127,11 +114,9 @@ class TaskList(QWidget):
         self.refresh()
 
     def remove_task(self, card):
-        """删除任务"""
         self.manager.delete_task(card.task.id)
         self.refresh()
 
     def update_task(self, task):
-        """更新任务（状态或标题变更时调用）"""
         self.manager.update_task(task)
         self.refresh()
