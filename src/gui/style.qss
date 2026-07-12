@@ -4,13 +4,13 @@
 
 /* 主窗口背景色：浅灰色 */
 QMainWindow {
-    background:#f5f7fb;
+    background: #f5f7fb;
 }
 
 QWidget {
-    font-family:"Microsoft YaHei";
-    font-size:14px;
-    color:#222;
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    color: #222;
 }
 
 /* ======================
@@ -19,14 +19,14 @@ QWidget {
 ====================== */
 
 #Sidebar {
-    background:white;
-    border-right:1px solid #e5e7eb;
+    background: white;
+    border-right: 1px solid #e5e7eb;
 }
 
 #SidebarTitle {
-    font-size:22px;
-    font-weight:bold;
-    padding:20px;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 20px;
 }
 
 /* ======================
@@ -34,9 +34,9 @@ QWidget {
 ====================== */
 
 #PageTitle {
-    font-size:30px;
-    font-weight:bold;
-    padding:10px 0;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 10px 0;
 }
 
 /* ======================
@@ -44,15 +44,15 @@ QWidget {
 ====================== */
 
 QLineEdit {
-    background:white;
-    border:1px solid #d1d5db;
-    border-radius:14px;
-    padding:12px 15px;
-    font-size:15px;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 14px;
+    padding: 12px 15px;
+    font-size: 15px;
 }
 
 QLineEdit:focus {
-    border:2px solid #6366f1;
+    border: 2px solid #6366f1;
 }
 
 /* ======================
@@ -60,18 +60,18 @@ QLineEdit:focus {
 ====================== */
 
 QPushButton {
-    background:#ffffff;
-    border:none;
-    border-radius:12px;
-    padding:10px 15px;
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 15px;
 }
 
 QPushButton:hover {
-    background:#eef2ff;
+    background: #eef2ff;
 }
 
 QPushButton:pressed {
-    background:#e0e7ff;
+    background: #e0e7ff;
 }
 
 /* ======================
@@ -79,17 +79,17 @@ QPushButton:pressed {
 ====================== */
 
 #AddButton {
-    background:#4f46e5;
-    color:white;
-    font-weight:bold;
+    background: #4f46e5;
+    color: white;
+    font-weight: bold;
 }
 
 #AddButton:hover {
-    background:#6366f1;
+    background: #6366f1;
 }
 
 #AddButton:pressed {
-    background:#4338ca;
+    background: #4338ca;
 }
 
 /* ======================
@@ -97,15 +97,15 @@ QPushButton:pressed {
 ====================== */
 
 #TaskCard {
-    background:white;
-    border-radius:16px;
-    border:1px solid #e5e7eb;
-    padding:10px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    padding: 10px;
 }
 
 #TaskCard:hover {
-    background:#f9fafb;
-    border:1px solid #c7d2fe;
+    background: #fafafa;
+    border: 1px solid #818cf8;
 }
 
 /* ======================
@@ -113,34 +113,13 @@ QPushButton:pressed {
 ====================== */
 
 QCheckBox {
-    width:22px;
-    height:22px;
+    width: 22px;
+    height: 22px;
 }
 
 /* ======================
-   删除按钮
+   TaskCard 内的按钮
 ====================== */
-
-#TaskCard QPushButton {
-    background:transparent;
-    border-radius:8px;
-    font-size:16px;
-}
-
-#TaskCard QPushButton:hover {
-    background:#fee2e2;
-}
-
-#TaskCard {
-    background: white;
-    border-radius: 16px;
-    border: 1px solid #e5e7eb;
-}
-
-#TaskCard:hover {
-    border: 1px solid #818cf8;
-    background: #fafafa;
-}
 
 #TaskCard QPushButton {
     border: none;
@@ -162,8 +141,7 @@ QCheckBox {
 }
 
 /* ======================
-   任务容器样式（新增）
-   给卡片区域增加圆角背景
+   任务容器样式
 ====================== */
 
 #TaskContainer {
@@ -173,8 +151,7 @@ QCheckBox {
 }
 
 /* ======================
-   滚动条样式（新增）
-   圆角滚动条，悬停时显示
+   滚动条样式
 ====================== */
 
 QScrollArea {
@@ -215,53 +192,45 @@ QScrollBar::sub-page:vertical {
 }
 
 /* ======================
-   滚动条样式（新增）
-   圆角滚动条，悬停时显示
+   底部信息栏样式
 ====================== */
 
-QScrollArea {
-    border: none;
-    background: transparent;
-}
-
-/* 垂直滚动条 */
-QScrollBar:vertical {
-    background: transparent;
-    width: 6px;
-    margin: 0px;
-    border-radius: 3px;
-}
-
-/* 滚动条滑块 */
-QScrollBar::handle:vertical {
-    background: #d1d5db;
-    border-radius: 3px;
-    min-height: 30px;
-}
-
-/* 滚动条滑块悬停 */
-QScrollBar::handle:vertical:hover {
-    background: #9ca3af;
-}
-
-/* 隐藏滚动条两端的箭头按钮 */
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-    height: 0px;
-}
-
-/* 滚动条轨道背景透明 */
-QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical {
-    background: transparent;
+#Footer {
+    background: white;
+    border-top: 1px solid #e5e7eb;
 }
 
 /* ======================
-   主容器样式（新增）
-   整个窗口的圆角背景
+   底部信息栏样式
 ====================== */
 
-#MainContainer {
-    background: #f5f7fb;
-    border-radius: 16px;
+#Footer {
+    background: white;
+    border-top: 1px solid #e5e7eb;
+}
+/* ======================
+   GitHub 超链接样式（带悬停效果）
+====================== */
+
+#GitHubLabel {
+    background: transparent;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+}
+
+#GitHubLabel:hover {
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+}
+
+
+/* ======================
+   版权信息样式
+====================== */
+
+#CopyrightLabel {
+    color: #9ca3af;
+    font-size: 12px;
+    background: transparent;
 }

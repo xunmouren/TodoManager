@@ -6,3 +6,4 @@ class Task:
     id: int
     title: str
     completed: bool = False
+    

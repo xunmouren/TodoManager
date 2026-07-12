@@ -45,16 +45,13 @@ class TaskList(QWidget):
         
         self.task_layout = QVBoxLayout()
         self.task_layout.setSpacing(2)
-        self.task_layout.setContentsMargins(10, 10, 10, 10)  # 增加内边距
-        self.task_layout.setAlignment(Qt.AlignTop)  # 顶部对齐
+        self.task_layout.setContentsMargins(10, 10, 10, 10)
+        self.task_layout.setAlignment(Qt.AlignTop)
         self.task_container.setLayout(self.task_layout)
         
         self.scroll_area = QScrollArea()
-        # 使用 setWidgetResizable(True) 让内容自适应宽度
         self.scroll_area.setWidgetResizable(True)
-        # 使用最小高度，让滚动区域可以伸缩
-        self.scroll_area.setFixedHeight(380)
-        # 无边框
+        self.scroll_area.setFixedHeight(360)
         self.scroll_area.setFrameShape(QScrollArea.NoFrame)
         self.scroll_area.setWidget(self.task_container)
 
@@ -65,14 +62,11 @@ class TaskList(QWidget):
         layout.addStretch()
 
         self.setLayout(layout)
-
-        self.setLayout(layout)
         self.add_button.clicked.connect(self.add_task)
         self.input.returnPressed.connect(self.add_task)
 
     def refresh(self):
         """刷新任务列表"""
-        # 清空布局中的所有组件
         while self.task_layout.count():
             item = self.task_layout.takeAt(0)
             widget = item.widget()
@@ -86,11 +80,9 @@ class TaskList(QWidget):
         else:
             tasks = self.manager.get_tasks()
 
-        # 反转列表：最新的在上面
         for task in reversed(tasks):
             self.create_card(task)
         
-        # 在底部添加弹性空间，让卡片从顶部排列
         self.task_layout.addStretch()
 
     def change_page(self, page):
