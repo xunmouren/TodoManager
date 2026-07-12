@@ -1,20 +1,21 @@
 /* ======================
-   全局
+   全局样式：所有组件的基础样式
 ====================== */
 
+/* 主窗口背景色：浅灰色 */
 QMainWindow {
     background:#f5f7fb;
 }
 
 QWidget {
-    font-family:
-    "Microsoft YaHei";
+    font-family:"Microsoft YaHei";
     font-size:14px;
     color:#222;
 }
 
 /* ======================
-   Sidebar
+   Sidebar（侧边栏）样式
+   使用 # 选择器精确匹配 objectName
 ====================== */
 
 #Sidebar {
@@ -29,7 +30,7 @@ QWidget {
 }
 
 /* ======================
-   页面标题
+   页面标题样式
 ====================== */
 
 #PageTitle {
@@ -39,7 +40,7 @@ QWidget {
 }
 
 /* ======================
-   输入框
+   输入框样式
 ====================== */
 
 QLineEdit {

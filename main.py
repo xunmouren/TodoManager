@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QApplication
 from src.gui.main_window import MainWindow
 
 def main():
+    """程序主入口函数"""
     # 创建应用程序实例
     app = QApplication([])
     # 拼接文件路径
