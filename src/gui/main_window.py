@@ -56,17 +56,17 @@ class MainWindow(QMainWindow):
 
         # GitHub 超链接（左下角）
         self.github_label = QLabel()
-        self.github_label.setObjectName("GitHubLabel")  # 🆕 设置对象名称
+        self.github_label.setObjectName("GitHubLabel")
         self.github_label.setOpenExternalLinks(True)
         self.github_label.setText(
-            '<a href="https://github.com/your-username/todomanager" style="color: #6b7280; font-size: 13px; text-decoration: none; font-weight: 500;">'
-            '📦 GitHub'
+            '<a href="https://github.com/xunmouren/TodoManager.git" style="color: #6b7280; font-size: 13px; text-decoration: none; font-weight: 500;">'
+            '📦GitHub'
             '</a>'
         )
 
         # 版权信息（右下角）
         self.copyright_label = QLabel("© 2026 TodoManager")
-        self.copyright_label.setObjectName("CopyrightLabel")  # 🆕 设置对象名称
+        self.copyright_label.setObjectName("CopyrightLabel")
         self.copyright_label.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
 
         footer_layout.addWidget(self.github_label)

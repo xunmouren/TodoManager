@@ -14,14 +14,7 @@ class TaskManager:
         """获取所有任务"""
         # 从存储加载原始数据(字典列表)
         data = self.storage.load()
-        return [
-            Task(
-                id=item["id"],
-                title=item["title"],
-                completed=item["completed"]
-            )
-            for item in data
-        ]
+        return [Task.from_dict(item)for item in data]
 
     def get_completed_tasks(self):
         """获取已完成的任务列表"""
@@ -33,16 +26,12 @@ class TaskManager:
 
     def add_task(self, title):
         """添加新任务"""
-        tasks = self.storage.load()
-        new_id = max([item["id"] for item in tasks],default=0) + 1
-        task = {
-            "id": new_id,
-            "title": title,
-            "completed": False
-        }
+        tasks = self.get_tasks()
+        new_id = max([task.id for task in tasks],default=0) + 1
+        task = Task(id=new_id,title=title)
         tasks.append(task)
-        self.storage.save(tasks)
-        return Task(**task)
+        self.save_tasks(tasks)
+        return task
 
     def delete_task(self, task_id):
         """删除指定ID的任务"""
@@ -58,12 +47,11 @@ class TaskManager:
 
     def update_task(self, task):
         """更新任务"""
-        tasks = self.storage.load()
-        for item in tasks:
-            if item["id"] == task.id:
-                item["title"] = task.title
-                item["completed"] = task.completed
-        self.storage.save(tasks)
+        tasks = self.get_tasks()
+        for index, item in enumerate(tasks):
+            if item.id == task.id:
+                tasks[index] = task
+        self.save_tasks(tasks)
 
     def reorder_ids(self):
         """重新编号"""
@@ -71,3 +59,7 @@ class TaskManager:
         for index, task in enumerate(tasks, start=1):
             task["id"] = index
         self.storage.save(tasks)
+
+    def save_tasks(self, tasks):
+        """保存任务列表到存储"""
+        self.storage.save([task.to_dict()for task in tasks])

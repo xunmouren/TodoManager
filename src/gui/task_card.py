@@ -1,85 +1,128 @@
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QCheckBox, QPushButton, QInputDialog
+from PySide6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
+    QVBoxLayout,
+    QLabel,
+    QCheckBox,
+    QPushButton
+)
 from PySide6.QtCore import Signal
+from src.core.task_editor import TaskEditor
 
 
 class TaskCard(QFrame):
     """
-    单个任务卡片
-    显示一个任务的标题、完成状态，提供编辑和删除功能
+    任务卡片组件，显示单个任务的信息并支持交互操作。
+    
+    Attributes:
+        delete_requested: 删除任务信号
+        status_changed: 状态变更信号
+        edit_requested: 编辑任务信号
     """
 
-    # 自定义信号
     delete_requested = Signal(object)
     status_changed = Signal(object)
     edit_requested = Signal(object)
 
     def __init__(self, task):
+        """
+        初始化任务卡片。
+        
+        Args:
+            task: 任务对象
+        """
         super().__init__()
         self.task = task
         self.setup_ui()
 
     def setup_ui(self):
-        """构建卡片界面"""
-        # 设置对象名称，用于 QSS 样式
+        """初始化UI组件。"""
         self.setObjectName("TaskCard")
-        self.setFixedHeight(55)
+        self.setFixedHeight(90)
 
-        layout = QHBoxLayout()
-        layout.setContentsMargins(15, 5, 10, 5)
+        # 主布局
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(12, 8, 12, 8)
+        main_layout.setSpacing(5)
 
+        # 第一行：复选框、标题、操作按钮
+        top_layout = QHBoxLayout()
         self.checkbox = QCheckBox()
         self.checkbox.setChecked(self.task.completed)
-
         self.label = QLabel(self.task.title)
-
-        # 编辑按钮和删除按钮
         self.edit_button = QPushButton("✏️")
         self.delete_button = QPushButton("🗑")
 
-        # 设置对象名称，用于不同的样式（编辑按钮蓝色悬停，删除按钮红色悬停）
+        # 保留QSS选择器
         self.edit_button.setObjectName("EditButton")
         self.delete_button.setObjectName("DeleteButton")
+        self.edit_button.setFixedSize(40, 40)
+        self.delete_button.setFixedSize(40, 40)
 
-        self.edit_button.setFixedSize(35, 35)
-        self.delete_button.setFixedSize(35, 35)
+        top_layout.addWidget(self.checkbox)
+        top_layout.addWidget(self.label)
+        top_layout.addStretch()
+        top_layout.addWidget(self.edit_button)
+        top_layout.addWidget(self.delete_button)
 
-        # 将所有组件添加到布局
-        layout.addWidget(self.checkbox)
-        layout.addWidget(self.label)
-        layout.addStretch()
-        layout.addWidget(self.edit_button)
-        layout.addWidget(self.delete_button)
+        # 第二行信息：优先级标签、日期标签
+        info_layout = QHBoxLayout()
+        self.priority_label = QLabel()
+        self.date_label = QLabel()
 
-        self.setLayout(layout)
+        info_layout.addWidget(self.priority_label)
+        info_layout.addStretch()
+        info_layout.addWidget(self.date_label)
+
+        main_layout.addLayout(top_layout)
+        main_layout.addLayout(info_layout)
+        self.setLayout(main_layout)
+
+        # 连接信号
         self.checkbox.stateChanged.connect(self.change_status)
         self.edit_button.clicked.connect(self.edit)
         self.delete_button.clicked.connect(self.delete)
-        self.update_style()
+
+        self.update_info()
+
+    def update_info(self):
+        """更新优先级和日期信息。"""
+        priority_map = {
+            "high": ("🔴 高优先级", "#ef4444"),
+            "medium": ("🟡 中优先级", "#eab308"),
+            "low": ("🟢 低优先级", "#22c55e")
+        }
+        text, color = priority_map.get(
+            self.task.priority,
+            ("🟡 中优先级", "#eab308")
+        )
+
+        self.priority_label.setText(text)
+        self.priority_label.setStyleSheet(
+            f"""
+            color:{color};
+            font-weight:bold;
+            """
+        )
+
+        if self.task.deadline:
+            self.date_label.setText(f"📅 {self.task.deadline}")
+        else:
+            self.date_label.setText("")
 
     def change_status(self):
+        """切换任务完成状态。"""
         self.task.completed = self.checkbox.isChecked()
-        self.update_style()
         self.status_changed.emit(self.task)
 
     def edit(self):
-        """切换任务的完成状态"""
-        text, ok = QInputDialog.getText(
-            self,
-            "编辑任务",
-            "任务名称:",
-            text=self.task.title
-        )
-        if ok and text.strip():
-            self.task.title = text.strip()
+        """编辑任务。"""
+        dialog = TaskEditor(self.task, self)
+        if dialog.exec():
             self.label.setText(self.task.title)
+            self.update_info()
             self.edit_requested.emit(self.task)
 
-    def update_style(self):
-        """根据完成状态更新样式"""
-        if self.task.completed:
-            self.label.setStyleSheet("color:#9ca3af;text-decoration:line-through;")
-        else:
-            self.label.setStyleSheet("color:#111827;")
     def delete(self):
-        """删除任务"""
+        """删除任务。"""
         self.delete_requested.emit(self)

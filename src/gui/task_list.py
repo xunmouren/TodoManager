@@ -44,7 +44,7 @@ class TaskList(QWidget):
         self.task_container.setObjectName("TaskContainer")
         
         self.task_layout = QVBoxLayout()
-        self.task_layout.setSpacing(2)
+        self.task_layout.setSpacing(10)
         self.task_layout.setContentsMargins(10, 10, 10, 10)
         self.task_layout.setAlignment(Qt.AlignTop)
         self.task_container.setLayout(self.task_layout)
@@ -86,10 +86,12 @@ class TaskList(QWidget):
         self.task_layout.addStretch()
 
     def change_page(self, page):
+        """切换当前显示的页面"""
         self.current_page = page
         self.refresh()
 
     def create_card(self, task):
+        """创建任务卡片并添加到列表中"""
         card = TaskCard(task)
         self.cards.append(card)
         self.task_layout.addWidget(card)
