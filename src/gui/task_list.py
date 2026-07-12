@@ -44,16 +44,19 @@ class TaskList(QWidget):
 
         # 任务滚动区域
         self.task_container = QWidget()
+        self.task_container.setObjectName("TaskContainer")
+        
         self.task_layout = QVBoxLayout()
         # 卡片间距
-        self.task_layout.setSpacing(12)
-        self.task_layout.setContentsMargins(5,5,5,5)
+        self.task_layout.setSpacing(6)  # 🆕 增加卡片间距
+        self.task_layout.setContentsMargins(10, 10, 10, 10)
         self.task_container.setLayout(self.task_layout)
+        
         self.scroll_area = QScrollArea()
         # 让内容自适应
         self.scroll_area.setWidgetResizable(True)
         # 最小高度
-        self.scroll_area.setMinimumHeight(500)
+        self.scroll_area.setMinimumHeight(200)
         # 无边框
         self.scroll_area.setFrameShape(QScrollArea.NoFrame)
         self.scroll_area.setWidget(self.task_container)
@@ -61,7 +64,7 @@ class TaskList(QWidget):
         layout.addWidget(title)
         layout.addWidget(self.input)
         layout.addWidget(self.add_button)
-        layout.addWidget(self.scroll_area,1)
+        layout.addWidget(self.scroll_area, 1)  # 第4个参数 1 表示可拉伸
 
         # 连接信号：点击按钮或按回车键都可以添加任务
         self.setLayout(layout)
@@ -89,9 +92,13 @@ class TaskList(QWidget):
         else:
             tasks = self.manager.get_tasks()
 
-        # 为每个任务创建并添加卡片
-        for task in tasks:
+        # ✅ 修复：只添加一次，使用 reversed() 让新任务在上面
+        # 先添加的在下面，后添加的在上面
+        for task in reversed(tasks):
             self.create_card(task)
+        
+        # 在布局底部添加弹性空间，让卡片从顶部开始排列
+        self.task_layout.addStretch()
 
     def change_page(self, page):
         """

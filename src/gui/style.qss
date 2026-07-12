@@ -160,3 +160,56 @@ QCheckBox {
 #EditButton:hover {
     background: #dbeafe;
 }
+
+/* ======================
+   🆕 任务容器样式（新增）
+   给卡片区域增加圆角背景
+====================== */
+
+#TaskContainer {
+    background: #f8f9fc;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+/* ======================
+   🆕 滚动条样式（新增）
+   圆角滚动条，悬停时显示
+====================== */
+
+QScrollArea {
+    border: none;
+    background: transparent;
+}
+
+/* 垂直滚动条 */
+QScrollBar:vertical {
+    background: transparent;
+    width: 6px;
+    margin: 0px;
+    border-radius: 3px;
+}
+
+/* 滚动条滑块 */
+QScrollBar::handle:vertical {
+    background: #d1d5db;
+    border-radius: 3px;
+    min-height: 30px;
+}
+
+/* 滚动条滑块悬停 */
+QScrollBar::handle:vertical:hover {
+    background: #9ca3af;
+}
+
+/* 隐藏滚动条两端的箭头按钮 */
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+/* 滚动条轨道背景透明 */
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
