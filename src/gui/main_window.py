@@ -3,11 +3,8 @@ from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QVBoxLayout,
-    QLabel,
-    QPushButton
 )
-from PySide6.QtGui import QGuiApplication, QIcon, QDesktopServices
-from PySide6.QtCore import Qt, QUrl, QSize
+from PySide6.QtGui import QGuiApplication
 from .sidebar import Sidebar
 from .task_list import TaskList
 from .footer import Footer
