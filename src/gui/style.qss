@@ -1,8 +1,9 @@
-/* ======================
-   全局样式：所有组件的基础样式
-====================== */
+/* =================================================
+   TodoManager Theme
+   全局样式与组件样式
+================================================= */
 
-/* 主窗口背景色：浅灰色 */
+/* ===== 全局 ===== */
 QMainWindow {
     background: #f5f7fb;
 }
@@ -13,11 +14,11 @@ QWidget {
     color: #222;
 }
 
-/* ======================
-   Sidebar（侧边栏）样式
-   使用 # 选择器精确匹配 objectName
-====================== */
+QDialog {
+    background: white;
+}
 
+/* ===== Sidebar ===== */
 #Sidebar {
     background: white;
     border-right: 1px solid #e5e7eb;
@@ -29,25 +30,19 @@ QWidget {
     padding: 20px;
 }
 
-/* ======================
-   页面标题样式
-====================== */
-
+/* ===== 页面标题 ===== */
 #PageTitle {
     font-size: 30px;
     font-weight: bold;
     padding: 10px 0;
 }
 
-/* ======================
-   输入框样式
-====================== */
-
+/* ===== 输入框 ===== */
 QLineEdit {
     background: white;
     border: 1px solid #d1d5db;
-    border-radius: 14px;
-    padding: 12px 15px;
+    border-radius: 12px;
+    padding: 8px 12px;
     font-size: 15px;
 }
 
@@ -60,10 +55,7 @@ QLineEdit::selection {
     color: white;
 }
 
-/* ======================
-   普通按钮
-====================== */
-
+/* ===== 普通按钮 ===== */
 QPushButton {
     background: #ffffff;
     border: none;
@@ -79,10 +71,7 @@ QPushButton:pressed {
     background: #e0e7ff;
 }
 
-/* ======================
-   添加按钮
-====================== */
-
+/* ===== 添加按钮 ===== */
 #AddButton {
     background: #4f46e5;
     color: white;
@@ -97,14 +86,13 @@ QPushButton:pressed {
     background: #4338ca;
 }
 
+/* ===== Checkbox ===== */
 QCheckBox {
     width: 22px;
     height: 22px;
 }
 
-/* ======================
-   TaskCard 内的按钮
-====================== */
+/* ===== TaskCard ===== */
 #TaskCard {
     background: white;
     border-radius: 16px;
@@ -118,8 +106,8 @@ QCheckBox {
 }
 
 #TaskCard QCheckBox {
-    width:18px;
-    height:18px;
+    width: 18px;
+    height: 18px;
 }
 
 #TaskCard QPushButton {
@@ -130,48 +118,41 @@ QCheckBox {
     font-size: 16px;
 }
 
-/* 编辑按钮 */
-#TaskCard #EditButton:hover {
-    background:#dbeafe;
+#TaskCard QLabel {
+    font-size: 13px;
 }
 
-/* 删除按钮 */
-#TaskCard #DeleteButton:hover {
-    background:#fee2e2;
+/* TaskCard 编辑按钮 */
+#TaskCard #EditButton:hover {
+    background: #dbeafe;
 }
 
 #TaskCard #EditButton:pressed {
-    background:#bfdbfe;
+    background: #bfdbfe;
+}
+
+/* TaskCard 删除按钮 */
+#TaskCard #DeleteButton:hover {
+    background: #fee2e2;
 }
 
 #TaskCard #DeleteButton:pressed {
-    background:#fecaca;
+    background: #fecaca;
 }
 
-#TaskCard QLabel {
-    font-size:13px;
-}
-
-/* ======================
-   任务容器样式
-====================== */
-
+/* ===== 任务容器 ===== */
 #TaskContainer {
     background: #f8f9fc;
     border-radius: 16px;
     border: 1px solid #e5e7eb;
 }
 
-/* ======================
-   滚动条样式
-====================== */
-
+/* ===== 滚动条 ===== */
 QScrollArea {
     border: none;
     background: transparent;
 }
 
-/* 垂直滚动条 */
 QScrollBar:vertical {
     background: transparent;
     width: 6px;
@@ -179,42 +160,32 @@ QScrollBar:vertical {
     border-radius: 3px;
 }
 
-/* 滚动条滑块 */
 QScrollBar::handle:vertical {
     background: #d1d5db;
     border-radius: 3px;
     min-height: 30px;
 }
 
-/* 滚动条滑块悬停 */
 QScrollBar::handle:vertical:hover {
     background: #9ca3af;
 }
 
-/* 隐藏滚动条两端的箭头按钮 */
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
     height: 0px;
 }
 
-/* 滚动条轨道背景透明 */
 QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: transparent;
 }
 
-/* ======================
-   Footer
-====================== */
-
+/* ===== Footer ===== */
 #Footer {
     background: transparent;
 }
 
-/* ======================
-   GitHub / Bilibili 图标按钮
-====================== */
-
+/* GitHub / Bilibili 图标按钮 */
 #GitHubButton,
 #BilibiliButton {
     background: transparent;
@@ -222,12 +193,10 @@ QScrollBar::sub-page:vertical {
     border-radius: 8px;
 }
 
-/* GitHub hover */
 #GitHubButton:hover {
     background: #eef2ff;
 }
 
-/* Bilibili hover */
 #BilibiliButton:hover {
     background: #fee2e2;
 }
@@ -237,121 +206,17 @@ QScrollBar::sub-page:vertical {
     background: #c7d2fe;
 }
 
-/* ======================
-   版权信息
-====================== */
-
+/* 版权信息 */
 #CopyrightLabel {
     color: #9ca3af;
     font-size: 12px;
     background: transparent;
 }
 
+/* ===== ComboBox / DateEdit 统一样式 ===== */
 QComboBox,
 QDateEdit,
-QLineEdit {
-    border:1px solid #d1d5db;
-    border-radius:8px;
-    padding:7px 10px;
-    background:white;
-    font-size:14px;
-}
-
-QComboBox:hover,
-QDateEdit:hover,
-QLineEdit:hover {
-    border:1px solid #818cf8;
-}
-
-QComboBox::drop-down,
-QDateEdit::drop-down {
-    border:none;
-    width:28px;
-}
-
-#ErrorLabel {
-    color:#dc2626;
-    font-size:12px;
-}
-
-QComboBox,
-QDateEdit {
-    border:1px solid #d1d5db;
-    border-radius:10px;
-    padding:8px 12px;
-    background:white;
-    font-size:15px;
-}
-
-QComboBox:hover,
-QDateEdit:hover {
-    border:1px solid #818cf8;
-    background:#fafafa;
-}
-
-QComboBox:focus,
-QDateEdit:focus {
-    border:1px solid #6366f1;
-}
-
-/* 下拉箭头 */
-QComboBox::drop-down,
-QDateEdit::drop-down {
-    width:35px;
-    border:none;
-}
-
-QComboBox::down-arrow,
-QDateEdit::down-arrow {
-    image:url(src/gui/icons/down.png);
-    width:12px;
-    height:12px;
-}
-
-/* 下拉列表 */
-QComboBox QAbstractItemView {
-    background:white;
-    border-radius:12px;
-    border:1px solid #e5e7eb;
-    padding:5px;
-    outline:none;
-}
-
-QComboBox QAbstractItemView::item {
-    height:35px;
-    padding-left:10px;
-    border-radius:8px;
-    color: #222;
-}
-
-QComboBox QAbstractItemView::item:hover {
-    background:#eef2ff;
-    color: #222;
-}
-
-/* 选中的项 */
-QComboBox QAbstractItemView::item:selected {
-    background: #cecef9;
-    color: white;  /* 选中时白色文字 */
-}
-
-/* 选中的项（当列表失去焦点时） */
-QComboBox QAbstractItemView::item:selected:!active {
-    background: #d1d5db;
-    color: #222;
-}
-
-/* ComboBox 选中文本样式 */
-QComboBox::selection {
-    background: #6366f1;
-    color: white;
-}
-
-/* ======================
-   DateEdit 选中样式
-====================== */
-
-QDateEdit {
+QDateTimeEdit {
     border: 1px solid #d1d5db;
     border-radius: 10px;
     padding: 8px 12px;
@@ -359,75 +224,203 @@ QDateEdit {
     font-size: 15px;
 }
 
-QDateEdit:focus {
+QComboBox:hover,
+QDateEdit:hover,
+QDateTimeEdit:hover {
+    border: 1px solid #818cf8;
+    background: #fafafa;
+}
+
+QComboBox:focus,
+QDateEdit:focus,
+QDateTimeEdit:focus {
     border: 1px solid #6366f1;
 }
 
-/* DateEdit 选中文本样式 */
-QDateEdit::selection {
+QComboBox::drop-down,
+QDateEdit::drop-down,
+QDateTimeEdit::drop-down {
+    width: 35px;
+    border: none;
+}
+
+QComboBox::down-arrow,
+QDateEdit::down-arrow,
+QDateTimeEdit::down-arrow {
+    image: url(src/gui/icons/down.png);
+    width: 12px;
+    height: 12px;
+}
+
+/* 下拉列表 */
+QComboBox QAbstractItemView {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 5px;
+    outline: none;
+}
+
+QComboBox QAbstractItemView::item {
+    height: 35px;
+    padding-left: 10px;
+    border-radius: 8px;
+    color: #222;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background: #eef2ff;
+    color: #222;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background: #cecef9;
+    color: white;
+}
+
+QComboBox QAbstractItemView::item:selected:!active {
+    background: #d1d5db;
+    color: #222;
+}
+
+QComboBox::selection,
+QDateEdit::selection,
+QDateTimeEdit::selection {
     background: #6366f1;
     color: white;
 }
 
-/* ======================
-   Search
-====================== */
-QLineEdit {
-    border:1px solid #d1d5db;
-    border-radius:12px;
-    padding:8px 12px;
-    font-size:15px;
-    background:white;
+/* ===== 错误提示 ===== */
+#ErrorLabel {
+    color: #dc2626;
+    font-size: 12px;
 }
 
-/* ======================
-   Search Button
-====================== */
-#SearchButton {
-    border:none;
-    border-radius:18px;
-    background:transparent;
-    font-size:18px;
-}
-
-#SearchButton:hover {
-    background:#eef2ff;
-}
-
-/* 搜索输入框 */
+/* ===== 搜索框 ===== */
 #SearchInput {
-    border:1px solid #d1d5db;
-    border-radius:10px;
-    padding:6px 10px;
-    font-size:14px;
-    background:white;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 14px;
+    background: white;
 }
 
 #SearchInput:focus {
-    border:1px solid #6366f1;
+    border: 1px solid #6366f1;
 }
 
 /* 搜索按钮 */
 #SearchButton {
-    border:none;
-    border-radius:18px;
-    background:transparent;
-    font-size:18px;
+    border: none;
+    border-radius: 18px;
+    background: transparent;
+    font-size: 18px;
 }
 
 #SearchButton:hover {
-    background:#eef2ff;
+    background: #eef2ff;
 }
 
-/* 搜索框 */
-#SearchInput {
-    border:1px solid #d1d5db;
-    border-radius:12px;
-    padding:6px 10px;
-    background:white;
-    font-size:14px;
+/* ===== TaskEditor 对话框 ===== */
+#TaskEditor {
+    background: white;
+    border-radius: 16px;
 }
 
-#SearchInput:focus {
-    border:1px solid #6366f1;
+#TaskEditor QLabel {
+    color: #374151;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+#TaskEditor QLineEdit,
+#TaskEditor QComboBox,
+#TaskEditor QDateEdit {
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: white;
+    font-size: 14px;
+    min-height: 20px;
+}
+
+#TaskEditor QLineEdit:focus,
+#TaskEditor QComboBox:focus,
+#TaskEditor QDateEdit:focus {
+    border: 2px solid #6366f1;
+}
+
+#TaskEditor QLineEdit::selection,
+#TaskEditor QComboBox::selection,
+#TaskEditor QDateEdit::selection {
+    background: #6366f1;
+    color: white;
+}
+
+#TaskEditor QComboBox QAbstractItemView {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 5px;
+    outline: none;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item {
+    height: 35px;
+    padding-left: 10px;
+    border-radius: 8px;
+    color: #222;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item:hover {
+    background: #eef2ff;
+    color: #222;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item:selected {
+    background: rgba(99, 102, 241, 0.7);
+    color: white;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item:selected:!active {
+    background: #d1d5db;
+    color: #222;
+}
+
+/* TaskEditor 按钮基础样式 */
+#TaskEditor QPushButton {
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 80px;
+    border: none;
+}
+
+/* 保存按钮 */
+#TaskEditor #SaveButton {
+    background: #4f46e5;
+    color: white;
+}
+
+#TaskEditor #SaveButton:hover {
+    background: #6366f1;
+}
+
+#TaskEditor #SaveButton:pressed {
+    background: #4338ca;
+}
+
+/* 取消按钮 */
+#TaskEditor #CancelButton {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+#TaskEditor #CancelButton:hover {
+    background: #e5e7eb;
+}
+
+#TaskEditor #CancelButton:pressed {
+    background: #d1d5db;
 }
