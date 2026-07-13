@@ -6,59 +6,51 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QPushButton
 )
-from PySide6.QtCore import Signal, QSize
+from PySide6.QtCore import Signal, QSize, Qt
 from PySide6.QtGui import QIcon
-from src.core.task_editor import TaskEditor
+
+from ..core.task_editor import TaskEditor
 
 
 class TaskCard(QFrame):
-    """
-    任务卡片组件，显示单个任务的信息并支持交互操作。
-    
-    Attributes:
-        delete_requested: 删除任务信号
-        status_changed: 状态变更信号
-        edit_requested: 编辑任务信号
-    """
+    """任务卡片组件，显示单个任务信息并支持交互操作"""
 
     delete_requested = Signal(object)
     status_changed = Signal(object)
     edit_requested = Signal(object)
 
     def __init__(self, task):
-        """
-        初始化任务卡片。
-        
-        Args:
-            task: 任务对象
-        """
         super().__init__()
         self.task = task
+        self.original_title = task.title
         self.setup_ui()
 
     def setup_ui(self):
-        """初始化UI组件。"""
+        """构建UI组件"""
         self.setObjectName("TaskCard")
         self.setFixedHeight(90)
 
-        # 主布局
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(12, 8, 12, 8)
         main_layout.setSpacing(5)
 
-        # 第一行：复选框、标题、操作按钮
+        # ===== 第一行：复选框、标题、操作按钮 =====
         top_layout = QHBoxLayout()
+
         self.checkbox = QCheckBox()
         self.checkbox.setChecked(self.task.completed)
+
         self.label = QLabel(self.task.title)
+        self.label.setTextFormat(Qt.RichText)  # 支持搜索高亮HTML
+
+        # 图标按钮
         self.edit_button = QPushButton()
         self.delete_button = QPushButton()
         self.edit_button.setIcon(QIcon("./icons/edit.svg"))
         self.delete_button.setIcon(QIcon("./icons/delete.svg"))
-        self.edit_button.setIconSize(QSize(18,18))
-        self.delete_button.setIconSize(QSize(18,18))
+        self.edit_button.setIconSize(QSize(18, 18))
+        self.delete_button.setIconSize(QSize(18, 18))
 
-        # 保留QSS选择器
         self.edit_button.setObjectName("EditButton")
         self.delete_button.setObjectName("DeleteButton")
         self.edit_button.setFixedSize(40, 40)
@@ -70,7 +62,7 @@ class TaskCard(QFrame):
         top_layout.addWidget(self.edit_button)
         top_layout.addWidget(self.delete_button)
 
-        # 第二行信息：优先级标签、日期标签
+        # ===== 第二行：优先级、日期 =====
         info_layout = QHBoxLayout()
         self.priority_label = QLabel()
         self.date_label = QLabel()
@@ -91,7 +83,7 @@ class TaskCard(QFrame):
         self.update_info()
 
     def update_info(self):
-        """更新优先级和日期信息。"""
+        """更新优先级和日期信息"""
         priority_map = {
             "high": ("🔴 高优先级", "#ef4444"),
             "medium": ("🟡 中优先级", "#eab308"),
@@ -115,19 +107,46 @@ class TaskCard(QFrame):
         else:
             self.date_label.setText("")
 
+    # ===== 搜索高亮 =====
+    def highlight(self, keyword):
+        """根据关键词高亮标题文本"""
+        if not keyword:
+            self.label.setText(self.original_title)
+            return
+
+        title = self.original_title
+        lower_title = title.lower()
+        lower_key = keyword.lower()
+
+        if lower_key in lower_title:
+            start = lower_title.index(lower_key)
+            end = start + len(keyword)
+
+            result = (
+                title[:start]
+                + "<span style='background:#fde68a;color:#111827;'>"
+                + title[start:end]
+                + "</span>"
+                + title[end:]
+            )
+            self.label.setText(result)
+        else:
+            self.label.setText(title)
+
     def change_status(self):
-        """切换任务完成状态。"""
+        """切换任务完成状态"""
         self.task.completed = self.checkbox.isChecked()
         self.status_changed.emit(self.task)
 
     def edit(self):
-        """编辑任务。"""
+        """编辑任务"""
         dialog = TaskEditor(self.task, self)
         if dialog.exec():
+            self.original_title = self.task.title
             self.label.setText(self.task.title)
             self.update_info()
             self.edit_requested.emit(self.task)
 
     def delete(self):
-        """删除任务。"""
+        """删除任务"""
         self.delete_requested.emit(self)

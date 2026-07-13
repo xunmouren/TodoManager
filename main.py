@@ -1,6 +1,6 @@
-import sys
+# import sys
+# sys.path.append(str(Path(__file__).parent / "src"))
 from pathlib import Path
-sys.path.append(str(Path(__file__).parent / "src"))
 from PySide6.QtWidgets import QApplication
 from src.gui.main_window import MainWindow
 from PySide6.QtGui import QIcon

@@ -10,10 +10,10 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import QDate
 from datetime import datetime
-from src.gui.animated_combo import AnimatedComboBox
+from ..gui.animated_combo import AnimatedComboBox
 
 class TaskEditor(QDialog):
-    """任务编辑对话框，用于编辑任务的标题、优先级、分类和截止日期。"""
+    """任务编辑对话框，用于编辑任务的标题、优先级、分类和截止日期"""
     def __init__(self, task, parent=None):
         super().__init__(parent)
         self.task = task

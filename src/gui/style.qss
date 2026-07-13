@@ -199,33 +199,41 @@ QScrollBar::sub-page:vertical {
 }
 
 /* ======================
-   底部信息栏样式
+   Footer
 ====================== */
 
 #Footer {
-    background: white;
-    border-top: 1px solid #e5e7eb;
+    background: transparent;
 }
 
 /* ======================
-   GitHub 超链接样式（带悬停效果）
+   GitHub / Bilibili 图标按钮
 ====================== */
 
-#GitHubLabel {
+#GitHubButton,
+#BilibiliButton {
     background: transparent;
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: 1px solid transparent;
+    border: none;
+    border-radius: 8px;
 }
 
-#GitHubLabel:hover {
+/* GitHub hover */
+#GitHubButton:hover {
     background: #eef2ff;
-    border: 1px solid #c7d2fe;
 }
 
+/* Bilibili hover */
+#BilibiliButton:hover {
+    background: #fee2e2;
+}
+
+#GitHubButton:pressed,
+#BilibiliButton:pressed {
+    background: #c7d2fe;
+}
 
 /* ======================
-   版权信息样式
+   版权信息
 ====================== */
 
 #CopyrightLabel {
@@ -326,5 +334,57 @@ QLineEdit {
 }
 
 QLineEdit:focus {
+    border:1px solid #6366f1;
+}
+
+/* ======================
+   Search Button
+====================== */
+#SearchButton {
+    border:none;
+    border-radius:18px;
+    background:transparent;
+    font-size:18px;
+}
+
+#SearchButton:hover {
+    background:#eef2ff;
+}
+
+/* 搜索输入框 */
+#SearchInput {
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    padding:6px 10px;
+    font-size:14px;
+    background:white;
+}
+
+#SearchInput:focus {
+    border:1px solid #6366f1;
+}
+
+/* 搜索按钮 */
+#SearchButton {
+    border:none;
+    border-radius:18px;
+    background:transparent;
+    font-size:18px;
+}
+
+#SearchButton:hover {
+    background:#eef2ff;
+}
+
+/* 搜索框 */
+#SearchInput {
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    padding:6px 10px;
+    background:white;
+    font-size:14px;
+}
+
+#SearchInput:focus {
     border:1px solid #6366f1;
 }

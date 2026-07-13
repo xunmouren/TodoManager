@@ -51,7 +51,7 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 3. 创建虚拟环境并安装依赖
-#本项目使用uv管理 Python 环境和依赖。
+#本项目使用uv管理 Python 环境和依赖
 uv sync
 
 4. 运行程序
