@@ -6,7 +6,8 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QPushButton
 )
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, QSize
+from PySide6.QtGui import QIcon
 from src.core.task_editor import TaskEditor
 
 
@@ -50,8 +51,12 @@ class TaskCard(QFrame):
         self.checkbox = QCheckBox()
         self.checkbox.setChecked(self.task.completed)
         self.label = QLabel(self.task.title)
-        self.edit_button = QPushButton("✏️")
-        self.delete_button = QPushButton("🗑")
+        self.edit_button = QPushButton()
+        self.delete_button = QPushButton()
+        self.edit_button.setIcon(QIcon("./icons/edit.svg"))
+        self.delete_button.setIcon(QIcon("./icons/delete.svg"))
+        self.edit_button.setIconSize(QSize(18,18))
+        self.delete_button.setIconSize(QSize(18,18))
 
         # 保留QSS选择器
         self.edit_button.setObjectName("EditButton")

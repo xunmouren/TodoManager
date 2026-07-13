@@ -3,6 +3,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent / "src"))
 from PySide6.QtWidgets import QApplication
 from src.gui.main_window import MainWindow
+from PySide6.QtGui import QIcon
 
 def main():
     """程序主入口函数"""
@@ -12,6 +13,8 @@ def main():
     style_path = (Path(__file__).parent/"src"/"gui"/"style.qss")
     # 加载样式
     app.setStyleSheet(style_path.read_text(encoding="utf-8"))
+    # 图标
+    app.setWindowIcon(QIcon("./icons/main.ico"))
     # 创建主窗口
     window = MainWindow()
     # 显示主窗口

@@ -120,6 +120,7 @@ QCheckBox {
 #TaskCard QPushButton {
     border: none;
     background: transparent;
+    padding: 5px;
     border-radius: 8px;
     font-size: 16px;
 }
