@@ -44,7 +44,7 @@ class TaskList(QWidget):
         self.task_container.setObjectName("TaskContainer")
         
         self.task_layout = QVBoxLayout()
-        self.task_layout.setSpacing(10)
+        self.task_layout.setSpacing(2)
         self.task_layout.setContentsMargins(10, 10, 10, 10)
         self.task_layout.setAlignment(Qt.AlignTop)
         self.task_container.setLayout(self.task_layout)
