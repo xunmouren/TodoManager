@@ -21,6 +21,7 @@ class TaskList(QWidget):
         super().__init__()
         self.manager = TaskManager()
         self.cards = []
+        self.tasks = []
         self.current_page = "all"
         self.setup_ui()
         self.refresh()
@@ -94,6 +95,7 @@ class TaskList(QWidget):
         """创建任务卡片并添加到列表中"""
         card = TaskCard(task)
         self.cards.append(card)
+        self.tasks.append(task)
         self.task_layout.addWidget(card)
         card.delete_requested.connect(self.remove_task)
         card.status_changed.connect(self.update_task)
@@ -114,3 +116,13 @@ class TaskList(QWidget):
     def update_task(self, task):
         self.manager.update_task(task)
         self.refresh()
+
+    def search(self, keyword):
+        """搜索"""
+        keyword = keyword.lower()
+        for card in self.cards:
+            title = card.task.title.lower()
+            if keyword in title:
+                card.show()
+            else:
+                card.hide()

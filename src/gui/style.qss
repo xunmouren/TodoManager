@@ -313,3 +313,18 @@ QComboBox QAbstractItemView::item {
 QComboBox QAbstractItemView::item:hover {
     background:#eef2ff;
 }
+
+/* ======================
+   Search
+====================== */
+QLineEdit {
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    padding:8px 12px;
+    font-size:15px;
+    background:white;
+}
+
+QLineEdit:focus {
+    border:1px solid #6366f1;
+}

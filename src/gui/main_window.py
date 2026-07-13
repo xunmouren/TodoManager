@@ -3,6 +3,7 @@ from PySide6.QtGui import QGuiApplication
 from PySide6.QtCore import Qt
 from .sidebar import Sidebar
 from .task_list import TaskList
+from .search_bar import SearchBar
 
 
 class MainWindow(QMainWindow):
@@ -76,6 +77,9 @@ class MainWindow(QMainWindow):
         footer.setLayout(footer_layout)
 
         # 组装：内容 + 底部
+        self.search_bar = SearchBar()
+        self.search_bar.text_changed.connect(self.task_list.search)
+        main_layout.addWidget(self.search_bar)
         main_layout.addWidget(content)  # 内容区域（拉伸填满）
         main_layout.addWidget(footer)   # 底部（固定高度）
 
