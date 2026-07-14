@@ -60,7 +60,7 @@ class TaskList(QWidget):
         self.priority_box.setCurrentIndex(1)  # 默认中等
 
         # 按钮
-        self.add_button = QPushButton("+ 添加任务")
+        self.add_button = QPushButton("+")
         self.add_button.setObjectName("AddButton")
 
         self.clear_button = QPushButton("🗑 清空")
@@ -77,8 +77,13 @@ class TaskList(QWidget):
 
         # 任务列表
         self.container = QWidget()
+        # 🆕 修复 Bug 1：添加 ObjectName 让样式生效
+        self.container.setObjectName("TaskContainer")
+        
         self.task_layout = QVBoxLayout()
         self.task_layout.setAlignment(Qt.AlignTop)
+        self.task_layout.setSpacing(10)  # 卡片间距
+        self.task_layout.setContentsMargins(15, 15, 15, 15)
         self.container.setLayout(self.task_layout)
 
         self.scroll = QScrollArea()
@@ -119,8 +124,24 @@ class TaskList(QWidget):
             card = TaskCard(task)
             self.task_layout.addWidget(card)
             self.cards.append(card)
+            
+            # 🆕 修复 Bug 2：连接卡片信号
+            card.delete_requested.connect(self.remove_task)
+            card.status_changed.connect(self.update_task)
+            card.edit_requested.connect(self.update_task)
 
         self.task_layout.addStretch()
+
+    # 🆕 修复 Bug 2：添加缺失的方法
+    def remove_task(self, card):
+        """删除任务"""
+        self.manager.delete_task(card.task.id)
+        self.refresh()
+
+    def update_task(self, task):
+        """更新任务"""
+        self.manager.update_task(task)
+        self.refresh()
 
     def add_task(self):
         """添加新任务（支持分类和优先级）"""
@@ -144,7 +165,7 @@ class TaskList(QWidget):
         keyword = keyword.lower()
         for card in self.cards:
             title = card.task.title.lower()
-            card.show() if keyword in title else card.hide()
+            card.setVisible(keyword in title if keyword else True)
 
     def clear_tasks(self):
         """清空所有任务"""

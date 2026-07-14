@@ -15,7 +15,7 @@ class TaskManager:
         for item in data:
             # 兼容旧数据
             if "category" not in item:
-                item["category"] = "default"
+                item["category"] = "默认"
             tasks.append(Task.from_dict(item))
         return tasks
 
@@ -34,11 +34,17 @@ class TaskManager:
         """获取未完成任务"""
         return [task for task in self.get_tasks() if not task.completed]
 
-    def add_task(self, title, category="默认"):
+    # 🆕 修复：添加 category 和 priority 参数
+    def add_task(self, title, category="默认", priority="medium"):
         """添加任务"""
         tasks = self.get_tasks()
         new_id = max([task.id for task in tasks], default=0) + 1
-        task = Task(id=new_id, title=title, category=category)
+        task = Task(
+            id=new_id,
+            title=title,
+            category=category,
+            priority=priority
+        )
         tasks.append(task)
         self.save_tasks(tasks)
         return task
