@@ -10,10 +10,11 @@ from PySide6.QtCore import Signal, QSize, Qt
 from PySide6.QtGui import QIcon
 
 from ..core.task_editor import TaskEditor
+from ..core.category import get_category_name
 
 
 class TaskCard(QFrame):
-    """任务卡片组件，显示单个任务信息并支持交互操作"""
+    """任务卡片组件，显示任务信息并支持交互操作"""
 
     delete_requested = Signal(object)
     status_changed = Signal(object)
@@ -26,9 +27,9 @@ class TaskCard(QFrame):
         self.setup_ui()
 
     def setup_ui(self):
-        """构建UI组件"""
+        """构建任务卡片界面"""
         self.setObjectName("TaskCard")
-        self.setFixedHeight(90)
+        self.setFixedHeight(100)
 
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(12, 8, 12, 8)
@@ -41,9 +42,9 @@ class TaskCard(QFrame):
         self.checkbox.setChecked(self.task.completed)
 
         self.label = QLabel(self.task.title)
-        self.label.setTextFormat(Qt.RichText)  # 支持搜索高亮HTML
+        self.label.setTextFormat(Qt.RichText)  # 支持搜索高亮
 
-        # 图标按钮
+        # 编辑删除按钮
         self.edit_button = QPushButton()
         self.delete_button = QPushButton()
         self.edit_button.setIcon(QIcon("./icons/edit.svg"))
@@ -62,11 +63,18 @@ class TaskCard(QFrame):
         top_layout.addWidget(self.edit_button)
         top_layout.addWidget(self.delete_button)
 
-        # ===== 第二行：优先级、日期 =====
+        # ===== 第二行：分类、优先级、日期 =====
         info_layout = QHBoxLayout()
+
+        self.category_label = QLabel()
+        self.category_label.setObjectName("CategoryLabel")
+
         self.priority_label = QLabel()
+        self.priority_label.setObjectName("PriorityLabel")
+
         self.date_label = QLabel()
 
+        info_layout.addWidget(self.category_label)
         info_layout.addWidget(self.priority_label)
         info_layout.addStretch()
         info_layout.addWidget(self.date_label)
@@ -75,7 +83,7 @@ class TaskCard(QFrame):
         main_layout.addLayout(info_layout)
         self.setLayout(main_layout)
 
-        # 连接信号
+        # 信号连接
         self.checkbox.stateChanged.connect(self.change_status)
         self.edit_button.clicked.connect(self.edit)
         self.delete_button.clicked.connect(self.delete)
@@ -83,7 +91,12 @@ class TaskCard(QFrame):
         self.update_info()
 
     def update_info(self):
-        """更新优先级和日期信息"""
+        """更新分类、优先级、日期信息"""
+        # 分类
+        category_name = get_category_name(self.task.category)
+        self.category_label.setText(f"📁 {category_name}")
+
+        # 优先级
         priority_map = {
             "high": ("🔴 高优先级", "#ef4444"),
             "medium": ("🟡 中优先级", "#eab308"),
@@ -93,7 +106,6 @@ class TaskCard(QFrame):
             self.task.priority,
             ("🟡 中优先级", "#eab308")
         )
-
         self.priority_label.setText(text)
         self.priority_label.setStyleSheet(
             f"""
@@ -102,12 +114,12 @@ class TaskCard(QFrame):
             """
         )
 
+        # 日期
         if self.task.deadline:
             self.date_label.setText(f"📅 {self.task.deadline}")
         else:
             self.date_label.setText("")
 
-    # ===== 搜索高亮 =====
     def highlight(self, keyword):
         """根据关键词高亮标题文本"""
         if not keyword:
@@ -121,7 +133,6 @@ class TaskCard(QFrame):
         if lower_key in lower_title:
             start = lower_title.index(lower_key)
             end = start + len(keyword)
-
             result = (
                 title[:start]
                 + "<span style='background:#fde68a;color:#111827;'>"

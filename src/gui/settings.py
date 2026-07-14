@@ -9,15 +9,16 @@ from PySide6.QtWidgets import (
     QKeySequenceEdit,
     QMessageBox
 )
+from PySide6.QtCore import Signal
 
 from ..core.config import Config
 from ..core.manager import TaskManager
-from PySide6.QtCore import Signal
 
 
 class SettingsPage(QWidget):
-    """设置页面，管理应用配置和快捷键"""
-    settings_changed = Signal()
+    """设置页面，管理应用配置"""
+
+    settings_changed = Signal()  # 设置改变信号
 
     def __init__(self):
         super().__init__()
@@ -40,12 +41,12 @@ class SettingsPage(QWidget):
         self.theme_box.addItem("浅色", "light")
         self.theme_box.addItem("深色", "dark")
 
-        # 自定义颜色
+        # 颜色
         color_label = QLabel("主题颜色")
         self.color_button = QPushButton("选择颜色")
         self.color_button.clicked.connect(self.choose_color)
 
-        # 字体大小
+        # 字体
         font_label = QLabel("字体大小")
         self.font_size = QSpinBox()
         self.font_size.setRange(10, 30)
@@ -62,11 +63,11 @@ class SettingsPage(QWidget):
         clear_button = QPushButton("🗑 清空所有任务")
         clear_button.clicked.connect(self.clear_tasks)
 
-        # 保存按钮
-        save = QPushButton("保存设置")
-        save.clicked.connect(self.save_settings)
+        # 保存
+        save_button = QPushButton("保存设置")
+        save_button.clicked.connect(self.save_settings)
 
-        # 按顺序添加所有控件
+        # 添加所有控件
         for w in [
             title, theme_label, self.theme_box,
             color_label, self.color_button,
@@ -74,7 +75,7 @@ class SettingsPage(QWidget):
             shortcut_label,
             search_label, self.search_shortcut,
             add_label, self.add_shortcut,
-            clear_button, save
+            clear_button, save_button
         ]:
             layout.addWidget(w)
 
@@ -98,12 +99,12 @@ class SettingsPage(QWidget):
         data = self.config.load()
 
         # 主题
-        index = self.theme_box.findData(data["theme"])
+        index = self.theme_box.findData(data.get("theme", "light"))
         if index >= 0:
             self.theme_box.setCurrentIndex(index)
 
-        # 字体大小
-        self.font_size.setValue(data["font_size"])
+        # 字体
+        self.font_size.setValue(data.get("font_size", 14))
 
         # 颜色
         self.color = data.get("color", "#6366f1")
@@ -126,23 +127,26 @@ class SettingsPage(QWidget):
             "color": self.color,
             "font_size": self.font_size.value(),
             "shortcuts": {
-                "search":self.search_shortcut.keySequence().toString() or "Ctrl+F",
+                "search": self.search_shortcut.keySequence().toString() or "Ctrl+F",
                 "add": self.add_shortcut.keySequence().toString() or "Ctrl+N"
             }
         }
+
         self.config.save(data)
         self.settings_changed.emit()
+        QMessageBox.information(self, "完成", "设置保存成功")
 
     def clear_tasks(self):
         """清空所有任务"""
-        result = QMessageBox.warning(
-            self,
-            "确认",
-            "确定删除所有任务吗？",
-            QMessageBox.Yes | QMessageBox.No
-        )
+        msg = QMessageBox(self)
+        msg.setWindowTitle("确认")
+        msg.setText("确定删除所有任务吗？")
+        msg.setIcon(QMessageBox.Warning)
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.button(QMessageBox.Yes).setText("是")
+        msg.button(QMessageBox.No).setText("否")
 
-        if result == QMessageBox.Yes:
+        if msg.exec() == QMessageBox.Yes:
             self.manager.clear_tasks()
             QMessageBox.information(self, "完成", "任务已经全部清空")
     

@@ -10,6 +10,7 @@ from PySide6.QtGui import (
     QShortcut,
     QKeySequence
 )
+from pathlib import Path
 
 from .sidebar import Sidebar
 from .task_list import TaskList
@@ -32,8 +33,8 @@ class MainWindow(QMainWindow):
     def setup_window(self):
         """设置窗口基本属性"""
         self.setWindowTitle("TodoManager")
-        self.resize(1000, 620)  # 原 1000x620
-        self.setMinimumSize(900, 600)  # 防止窗口过小导致布局溢出
+        self.resize(1000, 620)
+        self.setMinimumSize(900, 600)
 
     def setup_ui(self):
         """构建用户界面"""
@@ -41,7 +42,6 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
 
-        # ===== 内容区域 =====
         content = QWidget()
         content_layout = QHBoxLayout()
         content_layout.setContentsMargins(0, 0, 0, 0)
@@ -53,7 +53,6 @@ class MainWindow(QMainWindow):
         self.pages = QStackedWidget()
         self.task_list = TaskList()
         self.settings_page = SettingsPage()
-        self.settings_page.settings_changed.connect(self.reload_shortcuts)
 
         self.pages.addWidget(self.task_list)
         self.pages.addWidget(self.settings_page)
@@ -75,6 +74,9 @@ class MainWindow(QMainWindow):
         # 页面切换信号
         self.sidebar.page_changed.connect(self.change_page)
 
+        # 设置保存后刷新主题
+        self.settings_page.settings_changed.connect(self.apply_theme)
+
     def setup_shortcuts(self):
         """设置全局快捷键（从配置加载）"""
         settings = self.config.load()
@@ -83,11 +85,9 @@ class MainWindow(QMainWindow):
         search_key = shortcuts.get("search", "Ctrl+F")
         add_key = shortcuts.get("add", "Ctrl+N")
 
-        # 搜索快捷键
         self.search_shortcut = QShortcut(QKeySequence(search_key), self)
         self.search_shortcut.activated.connect(self.open_search)
 
-        # 添加任务快捷键
         self.add_shortcut = QShortcut(QKeySequence(add_key), self)
         self.add_shortcut.activated.connect(self.focus_task_input)
 
@@ -100,6 +100,19 @@ class MainWindow(QMainWindow):
         """聚焦任务输入框"""
         self.pages.setCurrentWidget(self.task_list)
         self.task_list.input.setFocus()
+
+    def apply_theme(self):
+        """应用主题（刷新样式）"""
+        style_path = Path(__file__).parent / "style.qss"
+        if not style_path.exists():
+            return
+
+        qss = style_path.read_text(encoding="utf-8")
+        settings = self.config.load()
+        color = settings.get("color", "#6366f1")
+        qss = qss.replace("PRIMARY_COLOR", color)
+
+        self.setStyleSheet(qss)
 
     def change_page(self, page):
         """切换页面"""
@@ -121,8 +134,7 @@ class MainWindow(QMainWindow):
         self.move(frame.topLeft())
 
     def reload_shortcuts(self):
-        # 删除旧快捷键
+        """重新加载快捷键"""
         self.search_shortcut.deleteLater()
         self.add_shortcut.deleteLater()
-        # 创建新的
         self.setup_shortcuts()

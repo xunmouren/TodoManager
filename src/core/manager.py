@@ -1,47 +1,52 @@
 from .task import Task
 from .storage import Storage
 
+
 class TaskManager:
-    """
-    任务数据管理器
-    负责所有数据操作：增、删、改、查
-    是界面层和数据存储层之间的桥梁
-    """
+    """任务数据管理器，负责任务增删改查"""
+
     def __init__(self):
         self.storage = Storage()
 
     def get_tasks(self):
         """获取所有任务"""
-        # 从存储加载原始数据(字典列表)
         data = self.storage.load()
-        return [Task.from_dict(item)for item in data]
+        tasks = []
+        for item in data:
+            # 兼容旧数据
+            if "category" not in item:
+                item["category"] = "default"
+            tasks.append(Task.from_dict(item))
+        return tasks
+
+    def get_tasks_by_category(self, category):
+        """根据分类获取任务"""
+        tasks = self.get_tasks()
+        if category == "all":
+            return tasks
+        return [task for task in tasks if task.category == category]
 
     def get_completed_tasks(self):
-        """获取已完成的任务列表"""
+        """获取已完成任务"""
         return [task for task in self.get_tasks() if task.completed]
 
     def get_uncompleted_tasks(self):
-        """获取未完成的任务列表"""
+        """获取未完成任务"""
         return [task for task in self.get_tasks() if not task.completed]
 
-    def add_task(self, title):
-        """添加新任务"""
+    def add_task(self, title, category="默认"):
+        """添加任务"""
         tasks = self.get_tasks()
-        new_id = max([task.id for task in tasks],default=0) + 1
-        task = Task(id=new_id,title=title)
+        new_id = max([task.id for task in tasks], default=0) + 1
+        task = Task(id=new_id, title=title, category=category)
         tasks.append(task)
         self.save_tasks(tasks)
         return task
 
     def delete_task(self, task_id):
-        """删除指定ID的任务"""
+        """删除任务"""
         tasks = self.storage.load()
-        # 使用列表推导式过滤掉要删除的任务
-        tasks = [
-            item
-            for item in tasks
-            if item["id"] != task_id
-        ]
+        tasks = [item for item in tasks if item["id"] != task_id]
         self.storage.save(tasks)
         self.reorder_ids()
 
@@ -61,8 +66,8 @@ class TaskManager:
         self.storage.save(tasks)
 
     def save_tasks(self, tasks):
-        """保存任务列表到存储"""
-        self.storage.save([task.to_dict()for task in tasks])
+        """保存任务列表"""
+        self.storage.save([task.to_dict() for task in tasks])
 
     def clear_tasks(self):
         """清空所有任务"""

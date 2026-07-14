@@ -6,85 +6,87 @@ from PySide6.QtWidgets import (
     QPushButton,
     QLineEdit,
     QScrollArea,
+    QComboBox,
     QMessageBox
 )
 from PySide6.QtCore import Qt
 
 from ..core.manager import TaskManager
+from ..core.category import get_category_items, get_category_keys
 from .task_card import TaskCard
 from .search_button import SearchButton
 
 
 class TaskList(QWidget):
-    """任务列表主界面，负责显示、添加、删除和管理任务卡片"""
+    """任务列表主界面，支持分类、优先级管理和搜索"""
 
     def __init__(self):
         super().__init__()
         self.manager = TaskManager()
-        self.cards = []
-        self.tasks = []
         self.current_page = "all"
+        self.cards = []
         self.setup_ui()
         self.refresh()
 
     def setup_ui(self):
         """构建界面布局"""
         layout = QVBoxLayout()
-        layout.setContentsMargins(16, 16, 16, 16)  # 缩小边距，避免溢出
+        layout.setContentsMargins(16, 16, 16, 16)
         layout.setSpacing(10)
 
-        # ===== 标题 =====
-        header = QWidget()
-        header_layout = QHBoxLayout()
-        header_layout.setContentsMargins(0, 0, 0, 0)
-
+        # 标题
         title = QLabel("我的任务")
         title.setObjectName("PageTitle")
+        layout.addWidget(title)
 
-        header_layout.addWidget(title)
-        header_layout.addStretch()
-
+        # 搜索
         self.search_button = SearchButton()
-        header_layout.addWidget(self.search_button)
+        layout.addWidget(self.search_button)
 
-        header.setLayout(header_layout)
-
-        # ===== 输入框 =====
+        # 输入区域
         self.input = QLineEdit()
         self.input.setPlaceholderText("输入任务...")
 
-        # ===== 按钮区域 =====
+        # 分类选择
+        self.category_box = QComboBox()
+        for key, name in get_category_items():
+            self.category_box.addItem(name, key)
+
+        # 优先级选择
+        self.priority_box = QComboBox()
+        self.priority_box.addItem("🔴 高", "high")
+        self.priority_box.addItem("🟡 中", "medium")
+        self.priority_box.addItem("🟢 低", "low")
+        self.priority_box.setCurrentIndex(1)  # 默认中等
+
+        # 按钮
         self.add_button = QPushButton("+ 添加任务")
         self.add_button.setObjectName("AddButton")
 
-        self.clear_button = QPushButton("🗑 清空任务")
+        self.clear_button = QPushButton("🗑 清空")
         self.clear_button.setObjectName("ClearButton")
 
-        button_layout = QHBoxLayout()
-        button_layout.addWidget(self.add_button)
-        button_layout.addWidget(self.clear_button)
+        # 输入布局
+        input_layout = QHBoxLayout()
+        input_layout.addWidget(self.input)
+        input_layout.addWidget(self.category_box)
+        input_layout.addWidget(self.priority_box)
+        input_layout.addWidget(self.add_button)
+        input_layout.addWidget(self.clear_button)
+        layout.addLayout(input_layout)
 
-        # ===== 任务区域 =====
-        self.task_container = QWidget()
+        # 任务列表
+        self.container = QWidget()
         self.task_layout = QVBoxLayout()
-        self.task_layout.setSpacing(2)
-        self.task_layout.setContentsMargins(10, 10, 10, 10)
         self.task_layout.setAlignment(Qt.AlignTop)
-        self.task_container.setLayout(self.task_layout)
+        self.container.setLayout(self.task_layout)
 
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setMinimumHeight(300)  # 不固定高度
-        self.scroll_area.setFrameShape(QScrollArea.NoFrame)
-        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.scroll_area.setWidget(self.task_container)
+        self.scroll = QScrollArea()
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setFrameShape(QScrollArea.NoFrame)
+        self.scroll.setWidget(self.container)
 
-        layout.addWidget(header)
-        layout.addWidget(self.input)
-        layout.addLayout(button_layout)
-        layout.addWidget(self.scroll_area)
-
+        layout.addWidget(self.scroll)
         self.setLayout(layout)
 
         # 信号连接
@@ -107,74 +109,53 @@ class TaskList(QWidget):
         # 根据当前页面获取任务
         if self.current_page == "completed":
             tasks = self.manager.get_completed_tasks()
+        elif self.current_page in get_category_keys():
+            tasks = self.manager.get_tasks_by_category(self.current_page)
         else:
             tasks = self.manager.get_tasks()
 
-        # 逆序添加任务卡片
-        for task in reversed(tasks):
-            self.create_card(task)
+        # 创建任务卡片
+        for task in tasks:
+            card = TaskCard(task)
+            self.task_layout.addWidget(card)
+            self.cards.append(card)
 
         self.task_layout.addStretch()
 
-    def clear_tasks(self):
-        """清空所有任务"""
-        result = QMessageBox.warning(
-            self,
-            "确认",
-            "确定清空所有任务吗？",
-            QMessageBox.Yes | QMessageBox.No
-        )
+    def add_task(self):
+        """添加新任务（支持分类和优先级）"""
+        text = self.input.text().strip()
+        if not text:
+            return
 
-        if result == QMessageBox.Yes:
-            self.manager.clear_tasks()
-            self.refresh()
+        category = self.category_box.currentData()
+        priority = self.priority_box.currentData()
+        self.manager.add_task(text, category, priority)
+        self.input.clear()
+        self.refresh()
 
     def change_page(self, page):
         """切换页面"""
         self.current_page = page
         self.refresh()
 
-    def create_card(self, task):
-        """创建任务卡片"""
-        card = TaskCard(task)
-        self.cards.append(card)
-        self.tasks.append(task)
-        self.task_layout.addWidget(card)
-
-        card.delete_requested.connect(self.remove_task)
-        card.status_changed.connect(self.update_task)
-        card.edit_requested.connect(self.update_task)
-
-    def add_task(self):
-        """添加新任务"""
-        text = self.input.text().strip()
-        if not text:
-            return
-
-        self.manager.add_task(text)
-        self.input.clear()
-        self.refresh()
-
-    def remove_task(self, card):
-        """删除任务"""
-        self.manager.delete_task(card.task.id)
-        self.refresh()
-
-    def update_task(self, task):
-        """更新任务"""
-        self.manager.update_task(task)
-        self.refresh()
-
     def search(self, keyword):
-        """搜索任务（根据关键词过滤卡片）"""
+        """搜索任务（根据标题关键词过滤）"""
         keyword = keyword.lower()
-
         for card in self.cards:
-            task = card.task
-            content = (task.title + str(task.category) + str(task.priority)).lower()
+            title = card.task.title.lower()
+            card.show() if keyword in title else card.hide()
 
-            if keyword in content:
-                card.show()
-                card.highlight(keyword)
-            else:
-                card.hide()
+    def clear_tasks(self):
+        """清空所有任务"""
+        msg = QMessageBox(self)
+        msg.setWindowTitle("确认")
+        msg.setText("确定删除所有任务吗？")
+        msg.setIcon(QMessageBox.Warning)
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.button(QMessageBox.Yes).setText("是")
+        msg.button(QMessageBox.No).setText("否")
+
+        if msg.exec() == QMessageBox.Yes:
+            self.manager.clear_tasks()
+            self.refresh()

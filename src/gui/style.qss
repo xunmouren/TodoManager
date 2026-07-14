@@ -47,11 +47,11 @@ QLineEdit {
 }
 
 QLineEdit:focus {
-    border: 2px solid #6366f1;
+    border: 2px solid PRIMARY_COLOR;
 }
 
 QLineEdit::selection {
-    background: #6366f1;
+    background: PRIMARY_COLOR;
     color: white;
 }
 
@@ -79,7 +79,7 @@ QPushButton:pressed {
 }
 
 #AddButton:hover {
-    background: #6366f1;
+    background: PRIMARY_COLOR;
 }
 
 #AddButton:pressed {
@@ -234,7 +234,7 @@ QDateTimeEdit:hover {
 QComboBox:focus,
 QDateEdit:focus,
 QDateTimeEdit:focus {
-    border: 1px solid #6366f1;
+    border: 1px solid PRIMARY_COLOR;
 }
 
 QComboBox::drop-down,
@@ -286,7 +286,7 @@ QComboBox QAbstractItemView::item:selected:!active {
 QComboBox::selection,
 QDateEdit::selection,
 QDateTimeEdit::selection {
-    background: #6366f1;
+    background: PRIMARY_COLOR;
     color: white;
 }
 
@@ -306,7 +306,7 @@ QDateTimeEdit::selection {
 }
 
 #SearchInput:focus {
-    border: 1px solid #6366f1;
+    border: 1px solid PRIMARY_COLOR;
 }
 
 /* 搜索按钮 */
@@ -347,13 +347,13 @@ QDateTimeEdit::selection {
 #TaskEditor QLineEdit:focus,
 #TaskEditor QComboBox:focus,
 #TaskEditor QDateEdit:focus {
-    border: 2px solid #6366f1;
+    border: 2px solid PRIMARY_COLOR;
 }
 
 #TaskEditor QLineEdit::selection,
 #TaskEditor QComboBox::selection,
 #TaskEditor QDateEdit::selection {
-    background: #6366f1;
+    background: PRIMARY_COLOR;
     color: white;
 }
 
@@ -404,7 +404,7 @@ QDateTimeEdit::selection {
 }
 
 #TaskEditor #SaveButton:hover {
-    background: #6366f1;
+    background: PRIMARY_COLOR;
 }
 
 #TaskEditor #SaveButton:pressed {
@@ -423,4 +423,13 @@ QDateTimeEdit::selection {
 
 #TaskEditor #CancelButton:pressed {
     background: #d1d5db;
+}
+
+/* 分类标签 */
+#CategoryLabel {
+    color:#6366f1;
+    background:#eef2ff;
+    padding:3px 8px;
+    border-radius:6px;
+    font-size:12px;
 }
