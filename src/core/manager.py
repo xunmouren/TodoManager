@@ -63,3 +63,7 @@ class TaskManager:
     def save_tasks(self, tasks):
         """保存任务列表到存储"""
         self.storage.save([task.to_dict()for task in tasks])
+
+    def clear_tasks(self):
+        """清空所有任务"""
+        self.storage.save([])
