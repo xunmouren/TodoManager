@@ -28,6 +28,9 @@ def apply_theme(app):
 
 def main():
     """主入口函数"""
+    data_dir = Path(__file__).parent / "data"
+    if not data_dir.exists():
+        data_dir.mkdir(parents=True, exist_ok=True)
     app = QApplication([])
 
     # 加载主题
