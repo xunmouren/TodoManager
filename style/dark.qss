@@ -1,0 +1,363 @@
+/* =================================================
+   Dark Theme - 暗色主题
+   只包含颜色相关的样式
+================================================= */
+
+/* ===== 全局 ===== */
+QMainWindow {
+    background: #1a1a2e;
+}
+
+QWidget {
+    color: #e0e0e0;
+}
+
+QDialog {
+    background: #16213e;
+}
+
+/* ===== Sidebar ===== */
+#Sidebar {
+    background: #16213e;
+    border-right-color: #2a2a4a;
+}
+
+#SidebarTitle {
+    color: #e0e0e0;
+}
+
+#Sidebar QPushButton {
+    background: transparent;
+    color: #c0c0c0;
+}
+
+#Sidebar QPushButton:hover {
+    background: #2a2a4a;
+    color: white;
+}
+
+#Sidebar QPushButton:pressed {
+    background: #3a3a5a;
+}
+
+/* ===== 输入框 ===== */
+QLineEdit {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    color: #e0e0e0;
+}
+
+QLineEdit:focus {
+    border-color: PRIMARY_COLOR;
+}
+
+QLineEdit::selection {
+    background: PRIMARY_COLOR;
+}
+
+/* ===== 普通按钮 ===== */
+QPushButton {
+    background: #2a2a4a;
+    color: #e0e0e0;
+}
+
+QPushButton:hover {
+    background: #3a3a5a;
+}
+
+QPushButton:pressed {
+    background: #4a4a6a;
+}
+
+/* ===== 添加按钮 ===== */
+#AddButton {
+    background: #4f46e5;
+    color: white;
+}
+
+#AddButton:hover {
+    background: PRIMARY_COLOR;
+}
+
+#AddButton:pressed {
+    background: #4338ca;
+}
+
+/* ===== TaskCard ===== */
+#TaskCard {
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+}
+
+#TaskCard:hover {
+    background: #222244;
+    border: 1px solid PRIMARY_COLOR;
+}
+
+#TaskCard QLabel {
+    color: #e0e0e0;
+}
+
+#TaskCard #EditButton:hover {
+    background: #2a2a5a;
+}
+
+#TaskCard #DeleteButton:hover {
+    background: #5a2a2a;
+}
+
+#TaskCard #EditButton:pressed {
+    background: #1a1a4a;
+}
+
+#TaskCard #DeleteButton:pressed {
+    background: #4a1a1a;
+}
+
+/* ===== 任务容器 ===== */
+#TaskContainer {
+    background: #16213e;
+    border: 1px solid #2a2a4a;
+}
+
+/* ===== 滚动条 ===== */
+QScrollBar::handle:vertical {
+    background: #3a3a5a;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #4a4a6a;
+}
+
+/* ===== Footer ===== */
+#Footer {
+    background: #16213e;
+    border-top: 1px solid #2a2a4a;
+}
+
+#CopyrightLabel {
+    color: #6a6a8a;
+}
+
+#GitHubButton:hover {
+    background: #2a2a5a;
+}
+
+#BilibiliButton:hover {
+    background: #5a2a2a;
+}
+
+#GitHubButton:pressed,
+#BilibiliButton:pressed {
+    background: #3a3a5a;
+}
+
+/* ===== ComboBox / DateEdit ===== */
+QComboBox,
+QDateEdit,
+QDateTimeEdit {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    color: #e0e0e0;
+}
+
+QComboBox:hover,
+QDateEdit:hover,
+QDateTimeEdit:hover {
+    border: 1px solid PRIMARY_COLOR;
+    background: #222244;
+}
+
+QComboBox:focus,
+QDateEdit:focus,
+QDateTimeEdit:focus {
+    border: 1px solid PRIMARY_COLOR;
+}
+
+QComboBox QAbstractItemView {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+}
+
+QComboBox QAbstractItemView::item {
+    color: #e0e0e0;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background: #2a2a4a;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background: PRIMARY_COLOR;
+    color: white;
+}
+
+QComboBox QAbstractItemView::item:selected:!active {
+    background: #3a3a5a;
+    color: #c0c0c0;
+}
+
+QComboBox::selection,
+QDateEdit::selection,
+QDateTimeEdit::selection {
+    background: PRIMARY_COLOR;
+    color: white;
+}
+
+/* ===== SpinBox ===== */
+QSpinBox {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    color: #e0e0e0;
+}
+
+QSpinBox:hover {
+    border: 1px solid PRIMARY_COLOR;
+    background: #222244;
+}
+
+QSpinBox:focus {
+    border: 1px solid PRIMARY_COLOR;
+}
+
+/* ===== 错误提示 ===== */
+#ErrorLabel {
+    color: #ef4444;
+}
+
+/* ===== 搜索框 ===== */
+#SearchInput {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    color: #e0e0e0;
+}
+
+#SearchInput:focus {
+    border: 1px solid PRIMARY_COLOR;
+}
+
+#SearchButton:hover {
+    background: #2a2a4a;
+}
+
+/* ===== TaskEditor ===== */
+#TaskEditor {
+    background: #16213e;
+}
+
+#TaskEditor QLabel {
+    color: #e0e0e0;
+}
+
+#TaskEditor QLineEdit,
+#TaskEditor QComboBox,
+#TaskEditor QDateEdit {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    color: #e0e0e0;
+}
+
+#TaskEditor QLineEdit:focus,
+#TaskEditor QComboBox:focus,
+#TaskEditor QDateEdit:focus {
+    border-color: PRIMARY_COLOR;
+}
+
+#TaskEditor QLineEdit::selection,
+#TaskEditor QComboBox::selection,
+#TaskEditor QDateEdit::selection {
+    background: PRIMARY_COLOR;
+}
+
+#TaskEditor QComboBox QAbstractItemView {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item {
+    color: #e0e0e0;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item:hover {
+    background: #2a2a4a;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item:selected {
+    background: PRIMARY_COLOR;
+    color: white;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item:selected:!active {
+    background: #3a3a5a;
+    color: #c0c0c0;
+}
+
+#TaskEditor #SaveButton {
+    background: #4f46e5;
+    color: white;
+}
+
+#TaskEditor #SaveButton:hover {
+    background: PRIMARY_COLOR;
+}
+
+#TaskEditor #SaveButton:pressed {
+    background: #4338ca;
+}
+
+#TaskEditor #CancelButton {
+    background: #2a2a4a;
+    color: #c0c0c0;
+}
+
+#TaskEditor #CancelButton:hover {
+    background: #3a3a5a;
+}
+
+#TaskEditor #CancelButton:pressed {
+    background: #4a4a6a;
+}
+
+/* ===== 分类标签 ===== */
+#CategoryLabel {
+    color: #818cf8;
+    background: #2a2a5a;
+}
+
+/* ===== SettingsPage ===== */
+#SettingsPage QSpinBox {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    color: #e0e0e0;
+}
+
+#SettingsPage QKeySequenceEdit {
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    color: #e0e0e0;
+}
+
+/* ===== Sidebar ===== */
+#Sidebar {
+    background: #16213e;
+    border-right-color: #2a2a4a;
+}
+
+#SidebarTitle {
+    color: #e0e0e0;
+}
+
+/*  暗色侧边栏按钮 */
+#Sidebar QPushButton {
+    background: #16213e;
+    color: #c0c0c0;
+}
+
+#Sidebar QPushButton:hover {
+    background: #2a2a4a;
+    color: white;
+}
+
+#Sidebar QPushButton:pressed {
+    background: #3a3a5a;
+}

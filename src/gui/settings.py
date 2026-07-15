@@ -7,7 +7,8 @@ from PySide6.QtWidgets import (
     QSpinBox,
     QColorDialog,
     QKeySequenceEdit,
-    QMessageBox
+    QMessageBox,
+    QHBoxLayout  #  添加
 )
 from PySide6.QtCore import Signal
 
@@ -18,10 +19,11 @@ from ..core.manager import TaskManager
 class SettingsPage(QWidget):
     """设置页面，管理应用配置"""
 
-    settings_changed = Signal()  # 设置改变信号
+    settings_changed = Signal()
 
     def __init__(self):
         super().__init__()
+        self.setObjectName("SettingsPage")
         self.config = Config()
         self.manager = TaskManager()
         self.color = "#6366f1"
@@ -31,53 +33,65 @@ class SettingsPage(QWidget):
     def setup_ui(self):
         """构建设置界面"""
         layout = QVBoxLayout()
+        layout.setSpacing(8)
+        layout.setContentsMargins(24, 20, 24, 20)
 
         title = QLabel("⚙ 设置")
         title.setObjectName("PageTitle")
 
-        # 主题
-        theme_label = QLabel("主题")
+        # 主题切换
+        theme_label = QLabel("🌓 主题")
         self.theme_box = QComboBox()
-        self.theme_box.addItem("浅色", "light")
-        self.theme_box.addItem("深色", "dark")
+        self.theme_box.addItem("☀️ 亮色", "light")
+        self.theme_box.addItem("🌙 暗色", "dark")
 
         # 颜色
-        color_label = QLabel("主题颜色")
+        color_label = QLabel("🎨 主题颜色")
         self.color_button = QPushButton("选择颜色")
         self.color_button.clicked.connect(self.choose_color)
 
-        # 字体
-        font_label = QLabel("字体大小")
+        #  字体大小 - 使用水平布局让 SpinBox 有足够空间
+        font_label = QLabel("📏 字体大小")
+        font_layout = QHBoxLayout()
         self.font_size = QSpinBox()
         self.font_size.setRange(10, 30)
+        self.font_size.setFixedWidth(80)  #  固定宽度确保显示完整
+        font_layout.addWidget(self.font_size)
+        font_layout.addStretch()
 
         # 快捷键
-        shortcut_label = QLabel("快捷键")
+        shortcut_label = QLabel("⌨️ 快捷键")
         search_label = QLabel("搜索任务")
         self.search_shortcut = QKeySequenceEdit()
+        self.search_shortcut.setFixedHeight(32)  #  统一高度
 
         add_label = QLabel("添加任务")
         self.add_shortcut = QKeySequenceEdit()
+        self.add_shortcut.setFixedHeight(32)
 
         # 清空任务
         clear_button = QPushButton("🗑 清空所有任务")
         clear_button.clicked.connect(self.clear_tasks)
 
         # 保存
-        save_button = QPushButton("保存设置")
+        save_button = QPushButton("💾 保存设置")
         save_button.clicked.connect(self.save_settings)
 
         # 添加所有控件
-        for w in [
-            title, theme_label, self.theme_box,
-            color_label, self.color_button,
-            font_label, self.font_size,
-            shortcut_label,
-            search_label, self.search_shortcut,
-            add_label, self.add_shortcut,
-            clear_button, save_button
-        ]:
-            layout.addWidget(w)
+        layout.addWidget(title)
+        layout.addWidget(theme_label)
+        layout.addWidget(self.theme_box)
+        layout.addWidget(color_label)
+        layout.addWidget(self.color_button)
+        layout.addWidget(font_label)
+        layout.addLayout(font_layout)  #  使用布局
+        layout.addWidget(shortcut_label)
+        layout.addWidget(search_label)
+        layout.addWidget(self.search_shortcut)
+        layout.addWidget(add_label)
+        layout.addWidget(self.add_shortcut)
+        layout.addWidget(clear_button)
+        layout.addWidget(save_button)
 
         layout.addStretch()
         self.setLayout(layout)
@@ -91,6 +105,7 @@ class SettingsPage(QWidget):
                 f"""
                 background:{self.color};
                 color:white;
+                border-radius:8px;
                 """
             )
 
@@ -98,24 +113,21 @@ class SettingsPage(QWidget):
         """加载配置到界面"""
         data = self.config.load()
 
-        # 主题
         index = self.theme_box.findData(data.get("theme", "light"))
         if index >= 0:
             self.theme_box.setCurrentIndex(index)
 
-        # 字体
         self.font_size.setValue(data.get("font_size", 14))
 
-        # 颜色
         self.color = data.get("color", "#6366f1")
         self.color_button.setStyleSheet(
             f"""
             background:{self.color};
             color:white;
+            border-radius:8px;
             """
         )
 
-        # 快捷键
         shortcuts = data.get("shortcuts", {})
         self.search_shortcut.setKeySequence(shortcuts.get("search", "Ctrl+F"))
         self.add_shortcut.setKeySequence(shortcuts.get("add", "Ctrl+N"))
@@ -149,7 +161,7 @@ class SettingsPage(QWidget):
         if msg.exec() == QMessageBox.Yes:
             self.manager.clear_tasks()
             QMessageBox.information(self, "完成", "任务已经全部清空")
-    
+
     # 用中文会出bug，点了没反应
     # def clear_tasks(self):
     #     """清空所有任务"""

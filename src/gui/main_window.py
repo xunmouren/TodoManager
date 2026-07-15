@@ -8,7 +8,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import (
     QGuiApplication,
     QShortcut,
-    QKeySequence
+    QKeySequence,
+    QIcon  #  添加
 )
 from pathlib import Path
 
@@ -25,16 +26,30 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.config = Config()
+        self.current_theme = "light"
         self.setup_window()
         self.setup_ui()
         self.setup_shortcuts()
         self.center_window()
+        self.apply_theme()
 
     def setup_window(self):
         """设置窗口基本属性"""
         self.setWindowTitle("TodoManager")
         self.resize(1000, 620)
         self.setMinimumSize(900, 600)
+        
+        #  设置窗口图标
+        icon_path = Path(__file__).parent.parent.parent / "icons" / "main.ico"
+        if icon_path.exists():
+            self.setWindowIcon(QIcon(str(icon_path)))
+        else:
+            # 尝试其他常见格式
+            for ext in [".png", ".svg"]:
+                alt_path = Path(__file__).parent.parent.parent / "icons" / f"main{ext}"
+                if alt_path.exists():
+                    self.setWindowIcon(QIcon(str(alt_path)))
+                    break
 
     def setup_ui(self):
         """构建用户界面"""
@@ -46,10 +61,7 @@ class MainWindow(QMainWindow):
         content_layout = QHBoxLayout()
         content_layout.setContentsMargins(0, 0, 0, 0)
 
-        # 左侧菜单
         self.sidebar = Sidebar()
-
-        # 页面容器
         self.pages = QStackedWidget()
         self.task_list = TaskList()
         self.settings_page = SettingsPage()
@@ -63,7 +75,6 @@ class MainWindow(QMainWindow):
         content.setLayout(content_layout)
         main_layout.addWidget(content)
 
-        # 底部
         footer = Footer()
         footer.setFixedHeight(36)
         main_layout.addWidget(footer)
@@ -71,14 +82,11 @@ class MainWindow(QMainWindow):
         container.setLayout(main_layout)
         self.setCentralWidget(container)
 
-        # 页面切换信号
         self.sidebar.page_changed.connect(self.change_page)
-
-        # 设置保存后刷新主题
         self.settings_page.settings_changed.connect(self.apply_theme)
 
     def setup_shortcuts(self):
-        """设置全局快捷键（从配置加载）"""
+        """设置全局快捷键"""
         settings = self.config.load()
         shortcuts = settings.get("shortcuts", {})
 
@@ -102,17 +110,29 @@ class MainWindow(QMainWindow):
         self.task_list.input.setFocus()
 
     def apply_theme(self):
-        """应用主题（刷新样式）"""
-        style_path = Path(__file__).parent / "style.qss"
-        if not style_path.exists():
-            return
-
-        qss = style_path.read_text(encoding="utf-8")
+        """应用主题"""
+        style_dir = Path(__file__).parent.parent.parent / "style"
+        
         settings = self.config.load()
+        theme = settings.get("theme", "light")
         color = settings.get("color", "#6366f1")
-        qss = qss.replace("PRIMARY_COLOR", color)
+        
+        self.current_theme = theme
 
-        self.setStyleSheet(qss)
+        qss_parts = []
+        
+        base_path = style_dir / "base.qss"
+        if base_path.exists():
+            qss_parts.append(base_path.read_text(encoding="utf-8"))
+        
+        theme_path = style_dir / f"{theme}.qss"
+        if theme_path.exists():
+            theme_qss = theme_path.read_text(encoding="utf-8")
+            theme_qss = theme_qss.replace("PRIMARY_COLOR", color)
+            qss_parts.append(theme_qss)
+        
+        final_qss = "\n".join(qss_parts)
+        self.setStyleSheet(final_qss)
 
     def change_page(self, page):
         """切换页面"""

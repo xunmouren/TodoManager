@@ -34,7 +34,7 @@ class TaskManager:
         """获取未完成任务"""
         return [task for task in self.get_tasks() if not task.completed]
 
-    # 🆕 修复：添加 category 和 priority 参数
+    #  修复：添加 category 和 priority 参数
     def add_task(self, title, category="默认", priority="medium"):
         """添加任务"""
         tasks = self.get_tasks()

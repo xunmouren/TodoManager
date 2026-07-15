@@ -1,6 +1,6 @@
 /* =================================================
-   TodoManager Theme
-   全局样式与组件样式
+   Light Theme - 亮色主题
+   只包含颜色相关的样式
 ================================================= */
 
 /* ===== 全局 ===== */
@@ -9,8 +9,6 @@ QMainWindow {
 }
 
 QWidget {
-    font-family: "Microsoft YaHei";
-    font-size: 14px;
     color: #222;
 }
 
@@ -21,46 +19,53 @@ QDialog {
 /* ===== Sidebar ===== */
 #Sidebar {
     background: white;
-    border-right: 1px solid #e5e7eb;
+    border-right-color: #e5e7eb;
 }
 
 #SidebarTitle {
-    font-size: 22px;
-    font-weight: bold;
-    padding: 20px;
+    color: #222;
 }
 
-/* ===== 页面标题 ===== */
-#PageTitle {
-    font-size: 30px;
-    font-weight: bold;
-    padding: 10px 0;
+/*  修复：侧边栏按钮白底 */
+#Sidebar QPushButton {
+    background: white;
+    color: #222;
+}
+
+#Sidebar QPushButton:hover {
+    background: #eef2ff;
+}
+
+#Sidebar QPushButton:pressed {
+    background: #e0e7ff;
+}
+
+/* 分类标题 */
+#CategoryTitle {
+    color: #6b7280;
+    font-size: 13px;
+    padding: 8px 15px 4px 15px;
 }
 
 /* ===== 输入框 ===== */
 QLineEdit {
     background: white;
     border: 1px solid #d1d5db;
-    border-radius: 12px;
-    padding: 8px 12px;
-    font-size: 15px;
+    color: #222;
 }
 
 QLineEdit:focus {
-    border: 2px solid PRIMARY_COLOR;
+    border-color: PRIMARY_COLOR;
 }
 
 QLineEdit::selection {
     background: PRIMARY_COLOR;
-    color: white;
 }
 
 /* ===== 普通按钮 ===== */
 QPushButton {
     background: #ffffff;
-    border: none;
-    border-radius: 12px;
-    padding: 10px 15px;
+    color: #222;
 }
 
 QPushButton:hover {
@@ -75,7 +80,6 @@ QPushButton:pressed {
 #AddButton {
     background: #4f46e5;
     color: white;
-    font-weight: bold;
 }
 
 #AddButton:hover {
@@ -86,18 +90,10 @@ QPushButton:pressed {
     background: #4338ca;
 }
 
-/* ===== Checkbox ===== */
-QCheckBox {
-    width: 22px;
-    height: 22px;
-}
-
 /* ===== TaskCard ===== */
 #TaskCard {
     background: white;
-    border-radius: 16px;
     border: 1px solid #e5e7eb;
-    padding: 10px;
 }
 
 #TaskCard:hover {
@@ -105,35 +101,20 @@ QCheckBox {
     border: 1px solid #818cf8;
 }
 
-#TaskCard QCheckBox {
-    width: 18px;
-    height: 18px;
-}
-
-#TaskCard QPushButton {
-    border: none;
-    background: transparent;
-    padding: 5px;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
 #TaskCard QLabel {
-    font-size: 13px;
+    color: #222;
 }
 
-/* TaskCard 编辑按钮 */
 #TaskCard #EditButton:hover {
     background: #dbeafe;
 }
 
-#TaskCard #EditButton:pressed {
-    background: #bfdbfe;
-}
-
-/* TaskCard 删除按钮 */
 #TaskCard #DeleteButton:hover {
     background: #fee2e2;
+}
+
+#TaskCard #EditButton:pressed {
+    background: #bfdbfe;
 }
 
 #TaskCard #DeleteButton:pressed {
@@ -143,41 +124,16 @@ QCheckBox {
 /* ===== 任务容器 ===== */
 #TaskContainer {
     background: #f8f9fc;
-    border-radius: 16px;
     border: 1px solid #e5e7eb;
 }
 
 /* ===== 滚动条 ===== */
-QScrollArea {
-    border: none;
-    background: transparent;
-}
-
-QScrollBar:vertical {
-    background: transparent;
-    width: 6px;
-    margin: 0px;
-    border-radius: 3px;
-}
-
 QScrollBar::handle:vertical {
     background: #d1d5db;
-    border-radius: 3px;
-    min-height: 30px;
 }
 
 QScrollBar::handle:vertical:hover {
     background: #9ca3af;
-}
-
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-    height: 0px;
-}
-
-QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical {
-    background: transparent;
 }
 
 /* ===== Footer ===== */
@@ -185,12 +141,8 @@ QScrollBar::sub-page:vertical {
     background: transparent;
 }
 
-/* GitHub / Bilibili 图标按钮 */
-#GitHubButton,
-#BilibiliButton {
-    background: transparent;
-    border: none;
-    border-radius: 8px;
+#CopyrightLabel {
+    color: #9ca3af;
 }
 
 #GitHubButton:hover {
@@ -206,22 +158,13 @@ QScrollBar::sub-page:vertical {
     background: #c7d2fe;
 }
 
-/* 版权信息 */
-#CopyrightLabel {
-    color: #9ca3af;
-    font-size: 12px;
-    background: transparent;
-}
-
-/* ===== ComboBox / DateEdit 统一样式 ===== */
+/* ===== ComboBox / DateEdit ===== */
 QComboBox,
 QDateEdit,
 QDateTimeEdit {
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    padding: 8px 12px;
     background: white;
-    font-size: 15px;
+    border: 1px solid #d1d5db;
+    color: #222;
 }
 
 QComboBox:hover,
@@ -237,40 +180,17 @@ QDateTimeEdit:focus {
     border: 1px solid PRIMARY_COLOR;
 }
 
-QComboBox::drop-down,
-QDateEdit::drop-down,
-QDateTimeEdit::drop-down {
-    width: 35px;
-    border: none;
-}
-
-QComboBox::down-arrow,
-QDateEdit::down-arrow,
-QDateTimeEdit::down-arrow {
-    image: url(src/gui/icons/down.png);
-    width: 12px;
-    height: 12px;
-}
-
-/* 下拉列表 */
 QComboBox QAbstractItemView {
     background: white;
-    border-radius: 12px;
     border: 1px solid #e5e7eb;
-    padding: 5px;
-    outline: none;
 }
 
 QComboBox QAbstractItemView::item {
-    height: 35px;
-    padding-left: 10px;
-    border-radius: 8px;
     color: #222;
 }
 
 QComboBox QAbstractItemView::item:hover {
     background: #eef2ff;
-    color: #222;
 }
 
 QComboBox QAbstractItemView::item:selected {
@@ -290,91 +210,82 @@ QDateTimeEdit::selection {
     color: white;
 }
 
+/* ===== SpinBox ===== */
+QSpinBox {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: #222;
+}
+
+QSpinBox:hover {
+    border: 1px solid #818cf8;
+    background: #fafafa;
+}
+
+QSpinBox:focus {
+    border: 1px solid PRIMARY_COLOR;
+}
+
 /* ===== 错误提示 ===== */
 #ErrorLabel {
     color: #dc2626;
-    font-size: 12px;
 }
 
 /* ===== 搜索框 ===== */
 #SearchInput {
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    padding: 6px 10px;
-    font-size: 14px;
     background: white;
+    border: 1px solid #d1d5db;
+    color: #222;
 }
 
 #SearchInput:focus {
     border: 1px solid PRIMARY_COLOR;
 }
 
-/* 搜索按钮 */
-#SearchButton {
-    border: none;
-    border-radius: 18px;
-    background: transparent;
-    font-size: 18px;
-}
-
 #SearchButton:hover {
     background: #eef2ff;
 }
 
-/* ===== TaskEditor 对话框 ===== */
+/* ===== TaskEditor ===== */
 #TaskEditor {
     background: white;
-    border-radius: 16px;
 }
 
 #TaskEditor QLabel {
     color: #374151;
-    font-weight: 500;
-    font-size: 13px;
 }
 
 #TaskEditor QLineEdit,
 #TaskEditor QComboBox,
 #TaskEditor QDateEdit {
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    padding: 10px 14px;
     background: white;
-    font-size: 14px;
-    min-height: 20px;
+    border: 1px solid #d1d5db;
+    color: #222;
 }
 
 #TaskEditor QLineEdit:focus,
 #TaskEditor QComboBox:focus,
 #TaskEditor QDateEdit:focus {
-    border: 2px solid PRIMARY_COLOR;
+    border-color: PRIMARY_COLOR;
 }
 
 #TaskEditor QLineEdit::selection,
 #TaskEditor QComboBox::selection,
 #TaskEditor QDateEdit::selection {
     background: PRIMARY_COLOR;
-    color: white;
 }
 
 #TaskEditor QComboBox QAbstractItemView {
     background: white;
-    border-radius: 12px;
     border: 1px solid #e5e7eb;
-    padding: 5px;
-    outline: none;
 }
 
 #TaskEditor QComboBox QAbstractItemView::item {
-    height: 35px;
-    padding-left: 10px;
-    border-radius: 8px;
     color: #222;
 }
 
 #TaskEditor QComboBox QAbstractItemView::item:hover {
     background: #eef2ff;
-    color: #222;
 }
 
 #TaskEditor QComboBox QAbstractItemView::item:selected {
@@ -387,17 +298,6 @@ QDateTimeEdit::selection {
     color: #222;
 }
 
-/* TaskEditor 按钮基础样式 */
-#TaskEditor QPushButton {
-    border-radius: 10px;
-    padding: 10px 24px;
-    font-size: 14px;
-    font-weight: 500;
-    min-width: 80px;
-    border: none;
-}
-
-/* 保存按钮 */
 #TaskEditor #SaveButton {
     background: #4f46e5;
     color: white;
@@ -411,7 +311,6 @@ QDateTimeEdit::selection {
     background: #4338ca;
 }
 
-/* 取消按钮 */
 #TaskEditor #CancelButton {
     background: #f3f4f6;
     color: #374151;
@@ -425,11 +324,21 @@ QDateTimeEdit::selection {
     background: #d1d5db;
 }
 
-/* 分类标签 */
+/* ===== 分类标签 ===== */
 #CategoryLabel {
-    color:#6366f1;
-    background:#eef2ff;
-    padding:3px 8px;
-    border-radius:6px;
-    font-size:12px;
+    color: #6366f1;
+    background: #eef2ff;
+}
+
+/* ===== SettingsPage ===== */
+#SettingsPage QSpinBox {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: #222;
+}
+
+#SettingsPage QKeySequenceEdit {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: #222;
 }

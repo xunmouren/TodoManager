@@ -25,6 +25,7 @@ class TaskList(QWidget):
         self.manager = TaskManager()
         self.current_page = "all"
         self.cards = []
+        self.current_keyword = ""  #  保存当前搜索关键词
         self.setup_ui()
         self.refresh()
 
@@ -57,7 +58,7 @@ class TaskList(QWidget):
         self.priority_box.addItem("🔴 高", "high")
         self.priority_box.addItem("🟡 中", "medium")
         self.priority_box.addItem("🟢 低", "low")
-        self.priority_box.setCurrentIndex(1)  # 默认中等
+        self.priority_box.setCurrentIndex(1)
 
         # 按钮
         self.add_button = QPushButton("+")
@@ -77,12 +78,11 @@ class TaskList(QWidget):
 
         # 任务列表
         self.container = QWidget()
-        # 🆕 修复 Bug 1：添加 ObjectName 让样式生效
         self.container.setObjectName("TaskContainer")
         
         self.task_layout = QVBoxLayout()
         self.task_layout.setAlignment(Qt.AlignTop)
-        self.task_layout.setSpacing(10)  # 卡片间距
+        self.task_layout.setSpacing(10)
         self.task_layout.setContentsMargins(15, 15, 15, 15)
         self.container.setLayout(self.task_layout)
 
@@ -125,14 +125,16 @@ class TaskList(QWidget):
             self.task_layout.addWidget(card)
             self.cards.append(card)
             
-            # 🆕 修复 Bug 2：连接卡片信号
             card.delete_requested.connect(self.remove_task)
             card.status_changed.connect(self.update_task)
             card.edit_requested.connect(self.update_task)
 
         self.task_layout.addStretch()
 
-    # 🆕 修复 Bug 2：添加缺失的方法
+        #  刷新后如果有搜索关键词，重新应用高亮
+        if self.current_keyword:
+            self.apply_highlight(self.current_keyword)
+
     def remove_task(self, card):
         """删除任务"""
         self.manager.delete_task(card.task.id)
@@ -144,7 +146,7 @@ class TaskList(QWidget):
         self.refresh()
 
     def add_task(self):
-        """添加新任务（支持分类和优先级）"""
+        """添加新任务"""
         text = self.input.text().strip()
         if not text:
             return
@@ -158,14 +160,34 @@ class TaskList(QWidget):
     def change_page(self, page):
         """切换页面"""
         self.current_page = page
+        self.current_keyword = ""  #  切换页面时清空搜索关键词
         self.refresh()
 
+    #  修改 search 方法
     def search(self, keyword):
-        """搜索任务（根据标题关键词过滤）"""
-        keyword = keyword.lower()
+        """搜索任务（根据标题关键词过滤并高亮）"""
+        self.current_keyword = keyword.strip()
+        self.apply_highlight(self.current_keyword)
+
+    #  新增高亮方法
+    def apply_highlight(self, keyword):
+        """应用高亮到所有卡片"""
+        keyword_lower = keyword.lower()
+        
         for card in self.cards:
-            title = card.task.title.lower()
-            card.setVisible(keyword in title if keyword else True)
+            if keyword_lower:
+                # 有关键词：检查是否匹配
+                title_lower = card.task.title.lower()
+                if keyword_lower in title_lower:
+                    card.show()
+                    card.highlight(keyword)  # 调用卡片的高亮方法
+                else:
+                    card.hide()
+                    card.highlight("")  # 清除高亮
+            else:
+                # 无关键词：显示所有卡片，清除高亮
+                card.show()
+                card.highlight("")
 
     def clear_tasks(self):
         """清空所有任务"""

@@ -1,0 +1,270 @@
+/* =================================================
+   Base Style - 公共样式
+   包含布局、圆角、间距、字体等与颜色无关的样式
+   颜色由 light.qss / dark.qss 提供
+================================================= */
+
+/* ===== 全局基础 ===== */
+QWidget {
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+}
+
+/* ===== Sidebar ===== */
+#Sidebar {
+    border-right: 1px solid;  /* 颜色由主题提供 */
+}
+
+#SidebarTitle {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+/* ===== 页面标题 ===== */
+#PageTitle {
+    font-size: 30px;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+/* ===== 输入框 ===== */
+QLineEdit {
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 15px;
+}
+
+QLineEdit:focus {
+    border: 2px solid;  /* 颜色由主题提供 */
+}
+
+QLineEdit::selection {
+    color: white;  /* 背景色由主题提供 */
+}
+
+/* ===== 普通按钮 ===== */
+QPushButton {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 15px;
+}
+
+/* ===== 添加按钮 ===== */
+#AddButton {
+    font-weight: bold;
+}
+
+/* ===== Checkbox ===== */
+QCheckBox {
+    width: 22px;
+    height: 22px;
+}
+
+/* ===== TaskCard ===== */
+#TaskCard {
+    border-radius: 16px;
+    padding: 10px;
+}
+
+#TaskCard QCheckBox {
+    width: 18px;
+    height: 18px;
+}
+
+#TaskCard QPushButton {
+    border: none;
+    background: transparent;
+    padding: 5px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#TaskCard QLabel {
+    font-size: 13px;
+}
+
+/* ===== 任务容器 ===== */
+#TaskContainer {
+    border-radius: 16px;
+}
+
+/* ===== 滚动条 ===== */
+QScrollArea {
+    border: none;
+    background: transparent;
+}
+
+QScrollBar:vertical {
+    background: transparent;
+    width: 6px;
+    margin: 0px;
+    border-radius: 3px;
+}
+
+QScrollBar::handle:vertical {
+    border-radius: 3px;
+    min-height: 30px;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+
+/* ===== Footer ===== */
+#GitHubButton,
+#BilibiliButton {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+}
+
+#CopyrightLabel {
+    font-size: 12px;
+    background: transparent;
+}
+
+/* ===== ComboBox / DateEdit ===== */
+QComboBox,
+QDateEdit,
+QDateTimeEdit {
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 15px;
+}
+
+QComboBox::drop-down,
+QDateEdit::drop-down,
+QDateTimeEdit::drop-down {
+    width: 35px;
+    border: none;
+}
+
+QComboBox::down-arrow,
+QDateEdit::down-arrow,
+QDateTimeEdit::down-arrow {
+    image: url(src/gui/icons/down.png);
+    width: 12px;
+    height: 12px;
+}
+
+QComboBox QAbstractItemView {
+    border-radius: 12px;
+    padding: 5px;
+    outline: none;
+}
+
+QComboBox QAbstractItemView::item {
+    height: 35px;
+    padding-left: 10px;
+    border-radius: 8px;
+}
+
+/* ===== SpinBox ===== */
+QSpinBox {
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 15px;
+}
+
+QSpinBox::up-button,
+QSpinBox::down-button {
+    width: 20px;
+    border: none;
+    background: transparent;
+}
+
+/* ===== 错误提示 ===== */
+#ErrorLabel {
+    font-size: 12px;
+}
+
+/* ===== 搜索框 ===== */
+#SearchInput {
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+#SearchButton {
+    border: none;
+    border-radius: 18px;
+    background: transparent;
+    font-size: 18px;
+}
+
+/* ===== TaskEditor ===== */
+#TaskEditor {
+    border-radius: 16px;
+}
+
+#TaskEditor QLabel {
+    font-weight: 500;
+    font-size: 13px;
+}
+
+#TaskEditor QLineEdit,
+#TaskEditor QComboBox,
+#TaskEditor QDateEdit {
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    min-height: 20px;
+}
+
+#TaskEditor QLineEdit:focus,
+#TaskEditor QComboBox:focus,
+#TaskEditor QDateEdit:focus {
+    border: 2px solid;
+}
+
+#TaskEditor QLineEdit::selection,
+#TaskEditor QComboBox::selection,
+#TaskEditor QDateEdit::selection {
+    color: white;
+}
+
+#TaskEditor QComboBox QAbstractItemView {
+    border-radius: 12px;
+    padding: 5px;
+    outline: none;
+}
+
+#TaskEditor QComboBox QAbstractItemView::item {
+    height: 35px;
+    padding-left: 10px;
+    border-radius: 8px;
+}
+
+#TaskEditor QPushButton {
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 80px;
+    border: none;
+}
+
+/* ===== 分类标签 ===== */
+#CategoryLabel {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+/* ===== SettingsPage ===== */
+#SettingsPage QSpinBox {
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+
+#SettingsPage QKeySequenceEdit {
+    border-radius: 8px;
+    padding: 5px 10px;
+}

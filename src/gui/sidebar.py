@@ -47,12 +47,19 @@ class Sidebar(QWidget):
         # 动态添加分类按钮
         self.add_category_buttons()
 
-        # 设置
+        # ✅ 修改：先把设置按钮移到 addStretch() 之后
+        # self.settings_button = QPushButton("⚙ 设置")  ← 原来在这里
+        # self.settings_button.setObjectName("SettingsButton")
+        # self.layout.addWidget(self.settings_button)
+
+        # ✅ 先添加弹性空间
+        self.layout.addStretch()
+
+        # ✅ 设置按钮放在底部
         self.settings_button = QPushButton("⚙ 设置")
         self.settings_button.setObjectName("SettingsButton")
         self.layout.addWidget(self.settings_button)
 
-        self.layout.addStretch()
         self.setLayout(self.layout)
 
         # 信号连接
