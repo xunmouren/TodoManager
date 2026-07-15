@@ -19,11 +19,16 @@ class TaskCard(QFrame):
     delete_requested = Signal(object)
     status_changed = Signal(object)
     edit_requested = Signal(object)
+    # 🆕 选择状态变化信号
+    selection_changed = Signal(object, bool)
 
     def __init__(self, task):
         super().__init__()
         self.task = task
         self.original_title = task.title
+        # 🆕 批量选择相关
+        self.batch_mode = False
+        self.selected = False
         self.setup_ui()
 
     def setup_ui(self):
@@ -38,11 +43,17 @@ class TaskCard(QFrame):
         # ===== 第一行：复选框、标题、操作按钮 =====
         top_layout = QHBoxLayout()
 
+        # 🆕 批量选择复选框（默认隐藏）
+        self.batch_checkbox = QCheckBox()
+        self.batch_checkbox.setVisible(False)
+        self.batch_checkbox.setFixedSize(20, 20)
+        self.batch_checkbox.stateChanged.connect(self.on_batch_checked)
+
         self.checkbox = QCheckBox()
         self.checkbox.setChecked(self.task.completed)
 
         self.label = QLabel(self.task.title)
-        self.label.setTextFormat(Qt.RichText)  # 支持搜索高亮
+        self.label.setTextFormat(Qt.RichText)
 
         # 编辑删除按钮
         self.edit_button = QPushButton()
@@ -57,6 +68,8 @@ class TaskCard(QFrame):
         self.edit_button.setFixedSize(40, 40)
         self.delete_button.setFixedSize(40, 40)
 
+        # 🆕 批量选择复选框放在最前面
+        top_layout.addWidget(self.batch_checkbox)
         top_layout.addWidget(self.checkbox)
         top_layout.addWidget(self.label)
         top_layout.addStretch()
@@ -90,13 +103,56 @@ class TaskCard(QFrame):
 
         self.update_info()
 
+    # 🆕 批量选择相关方法
+    def set_batch_mode(self, enabled):
+        """设置批量模式"""
+        self.batch_mode = enabled
+        self.batch_checkbox.setVisible(enabled)
+        if not enabled:
+            self.set_checked(False)
+    
+    def set_checked(self, checked):
+        """设置选中状态"""
+        self.selected = checked
+        self.batch_checkbox.setChecked(checked)
+        # 选中时改变卡片样式
+        if checked:
+            self.setStyleSheet("""
+                #TaskCard {
+                    background: #eef2ff;
+                    border: 2px solid #6366f1;
+                    border-radius: 16px;
+                    padding: 10px;
+                }
+            """)
+        else:
+            self.setStyleSheet("")
+    
+    def is_checked(self):
+        """获取选中状态"""
+        return self.selected
+    
+    def on_batch_checked(self, state):
+        """批量复选框状态变化"""
+        self.selected = state == Qt.Checked
+        if self.selected:
+            self.setStyleSheet("""
+                #TaskCard {
+                    background: #eef2ff;
+                    border: 2px solid #6366f1;
+                    border-radius: 16px;
+                    padding: 10px;
+                }
+            """)
+        else:
+            self.setStyleSheet("")
+        self.selection_changed.emit(self, self.selected)
+
     def update_info(self):
         """更新分类、优先级、日期信息"""
-        # 分类
         category_name = get_category_name(self.task.category)
         self.category_label.setText(f"📁 {category_name}")
 
-        # 优先级
         priority_map = {
             "high": ("🔴 高优先级", "#ef4444"),
             "medium": ("🟡 中优先级", "#eab308"),
@@ -114,7 +170,6 @@ class TaskCard(QFrame):
             """
         )
 
-        # 日期
         if self.task.deadline:
             self.date_label.setText(f"📅 {self.task.deadline}")
         else:

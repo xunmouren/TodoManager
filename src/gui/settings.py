@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QColorDialog,
     QKeySequenceEdit,
     QMessageBox,
-    QHBoxLayout  #  添加
+    QHBoxLayout
 )
 from PySide6.QtCore import Signal
 
@@ -50,12 +50,12 @@ class SettingsPage(QWidget):
         self.color_button = QPushButton("选择颜色")
         self.color_button.clicked.connect(self.choose_color)
 
-        #  字体大小 - 使用水平布局让 SpinBox 有足够空间
+        # 字体大小
         font_label = QLabel("📏 字体大小")
         font_layout = QHBoxLayout()
         self.font_size = QSpinBox()
         self.font_size.setRange(10, 30)
-        self.font_size.setFixedWidth(80)  #  固定宽度确保显示完整
+        self.font_size.setFixedWidth(80)
         font_layout.addWidget(self.font_size)
         font_layout.addStretch()
 
@@ -63,7 +63,7 @@ class SettingsPage(QWidget):
         shortcut_label = QLabel("⌨️ 快捷键")
         search_label = QLabel("搜索任务")
         self.search_shortcut = QKeySequenceEdit()
-        self.search_shortcut.setFixedHeight(32)  #  统一高度
+        self.search_shortcut.setFixedHeight(32)
 
         add_label = QLabel("添加任务")
         self.add_shortcut = QKeySequenceEdit()
@@ -84,7 +84,7 @@ class SettingsPage(QWidget):
         layout.addWidget(color_label)
         layout.addWidget(self.color_button)
         layout.addWidget(font_label)
-        layout.addLayout(font_layout)  #  使用布局
+        layout.addLayout(font_layout)
         layout.addWidget(shortcut_label)
         layout.addWidget(search_label)
         layout.addWidget(self.search_shortcut)
@@ -146,8 +146,7 @@ class SettingsPage(QWidget):
 
         self.config.save(data)
         self.settings_changed.emit()
-        QMessageBox.information(self, "完成", "设置保存成功")
-
+    
     def clear_tasks(self):
         """清空所有任务"""
         msg = QMessageBox(self)
@@ -161,6 +160,28 @@ class SettingsPage(QWidget):
         if msg.exec() == QMessageBox.Yes:
             self.manager.clear_tasks()
             QMessageBox.information(self, "完成", "任务已经全部清空")
+
+    # ✅ 移除弹窗，静默保存
+    # def save_settings(self):
+    #     """保存界面配置到文件"""
+    #     data = {
+    #         "theme": self.theme_box.currentData(),
+    #         "color": self.color,
+    #         "font_size": self.font_size.value(),
+    #         "shortcuts": {
+    #             "search": self.search_shortcut.keySequence().toString() or "Ctrl+F",
+    #             "add": self.add_shortcut.keySequence().toString() or "Ctrl+N"
+    #         }
+    #     }
+    #     self.config.save(data)
+    #     self.settings_changed.emit()
+    #     # ✅ 移除弹窗，直接关闭设置页面
+    #     # 返回到任务列表页面
+    #     parent = self.parent()
+    #     while parent and not hasattr(parent, 'change_page'):
+    #         parent = parent.parent()
+    #     if parent and hasattr(parent, 'change_page'):
+    #         parent.change_page("all")
 
     # 用中文会出bug，点了没反应
     # def clear_tasks(self):
