@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# 打包文件
+*.egg-info/
+dist/
+build/
+*.whl
+*.egg
