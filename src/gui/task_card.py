@@ -19,14 +19,14 @@ class TaskCard(QFrame):
     delete_requested = Signal(object)
     status_changed = Signal(object)
     edit_requested = Signal(object)
-    # 🆕 选择状态变化信号
+    # 选择状态变化信号
     selection_changed = Signal(object, bool)
 
     def __init__(self, task):
         super().__init__()
         self.task = task
         self.original_title = task.title
-        # 🆕 批量选择相关
+        # 批量选择相关
         self.batch_mode = False
         self.selected = False
         self.setup_ui()
@@ -43,7 +43,7 @@ class TaskCard(QFrame):
         # ===== 第一行：复选框、标题、操作按钮 =====
         top_layout = QHBoxLayout()
 
-        # 🆕 批量选择复选框（默认隐藏）
+        # 批量选择复选框（默认隐藏）
         self.batch_checkbox = QCheckBox()
         self.batch_checkbox.setVisible(False)
         self.batch_checkbox.setFixedSize(20, 20)
@@ -68,7 +68,7 @@ class TaskCard(QFrame):
         self.edit_button.setFixedSize(40, 40)
         self.delete_button.setFixedSize(40, 40)
 
-        # 🆕 批量选择复选框放在最前面
+        # 批量选择复选框放在最前面
         top_layout.addWidget(self.batch_checkbox)
         top_layout.addWidget(self.checkbox)
         top_layout.addWidget(self.label)
@@ -103,7 +103,7 @@ class TaskCard(QFrame):
 
         self.update_info()
 
-    # 🆕 批量选择相关方法
+    # 批量选择相关方法
     def set_batch_mode(self, enabled):
         """设置批量模式"""
         self.batch_mode = enabled

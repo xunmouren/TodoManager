@@ -8,13 +8,11 @@ from PySide6.QtWidgets import (
     QScrollArea,
     QComboBox,
     QMessageBox,
-    QCheckBox,  # 🆕 添加
-    QMenu,      # 🆕 添加
-    QDialog,    # 🆕 添加
-    QDialogButtonBox  # 🆕 添加
+    QCheckBox,  # 添加
+    QDialog,    # 添加
+    QDialogButtonBox  # 添加
 )
-from PySide6.QtCore import Qt, Signal  # 🆕 添加 Signal
-from PySide6.QtGui import QAction  # 🆕 添加
+from PySide6.QtCore import Qt  # 添加 Signal
 
 from ..core.manager import TaskManager
 from ..core.category import get_category_items, get_category_keys
@@ -22,7 +20,7 @@ from .task_card import TaskCard
 from .search_button import SearchButton
 
 
-# 🆕 批量操作对话框
+# 批量操作对话框
 class BatchActionDialog(QDialog):
     """批量操作对话框"""
     
@@ -88,7 +86,7 @@ class TaskList(QWidget):
         self.current_keyword = ""
         self.sort_by = "created"
         self.sort_reverse = True
-        # 🆕 批量操作相关
+        # 批量操作相关
         self.selected_cards = set()  # 选中的卡片集合
         self.batch_mode = False  # 是否处于批量模式
         self.setup_ui()
@@ -105,7 +103,7 @@ class TaskList(QWidget):
         title = QLabel("我的任务")
         title.setObjectName("PageTitle")
         
-        # 🆕 批量操作按钮
+        # 批量操作按钮
         self.batch_toggle = QPushButton("☑ 批量操作")
         self.batch_toggle.setObjectName("BatchToggleButton")
         self.batch_toggle.setFixedHeight(32)
@@ -116,7 +114,7 @@ class TaskList(QWidget):
         header_layout.addWidget(self.batch_toggle)
         layout.addLayout(header_layout)
 
-        # 🆕 批量操作工具栏（默认隐藏）
+        # 批量操作工具栏（默认隐藏）
         self.batch_toolbar = QWidget()
         self.batch_toolbar.setVisible(False)
         self.batch_toolbar.setObjectName("BatchToolbar")
@@ -467,7 +465,7 @@ class TaskList(QWidget):
             card.delete_requested.connect(self.remove_task)
             card.status_changed.connect(self.update_task)
             card.edit_requested.connect(self.update_task)
-            # 🆕 连接批量选择信号
+            # 连接批量选择信号
             card.selection_changed.connect(self.on_card_selected)
 
         self.task_layout.addStretch()
@@ -475,7 +473,7 @@ class TaskList(QWidget):
         if self.current_keyword:
             self.apply_highlight(self.current_keyword)
         
-        # 🆕 如果处于批量模式，重新设置卡片状态
+        # 如果处于批量模式，重新设置卡片状态
         if self.batch_mode:
             for card in self.cards:
                 card.set_batch_mode(True)
@@ -505,7 +503,7 @@ class TaskList(QWidget):
     def change_page(self, page):
         self.current_page = page
         self.current_keyword = ""
-        # 🆕 切换页面时退出批量模式
+        # 切换页面时退出批量模式
         if self.batch_mode:
             self.toggle_batch_mode()
         self.refresh()
