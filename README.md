@@ -38,7 +38,7 @@ TodoManager 提供简洁直观的任务管理界面，支持任务添加、编�
 | Dataclass | 数据模型管理 |
 
 ## 🚀 安装运行
-```bash
+``` bash
 1. 克隆项目
 git clone https://github.com/xunmouren/TodoManager.git
 cd TodoManager
